@@ -1,0 +1,2492 @@
+"""Given an array of integers, return a new array such that each element at index i of the new array
+is a product of all the numbers in the original array except the one at i"""
+
+
+def product_not_i(arr):
+    arr_product = 1
+    for i in arr:                                   # runtime: O(n)
+        arr_product *= i
+    new_arr = []
+    for i in arr:                                   # runtime: O(n)
+        new_arr.append(int(arr_product/i))
+    return new_arr
+
+# runtime would be O(2n): linear
+
+
+"""Given an array of integers, find the first missing positive integer in linear time and constant space.
+In other words, find the lowest possible integer that does not exist in the array.
+The array can contain duplicates and negative numbers as well."""
+
+
+def lowest_int_not_in_arr(arr):
+    lst = [0 for i in range(len(arr))]
+    print(lst)
+    for num in arr:                                 # runtime: O(n)
+        if 0 < num < len(lst):
+            lst[num - 1] = 1
+            print(lst)
+    return lst.index(0) + 1                         # runtime at worst: O(n)
+
+# runtime would be at worst O(2n): linear
+
+
+"""cons(a, b) constructs a pair, and car(pair) and cdr(pair) returns the first and last element of that pair.
+For example, car(cons(3, 4)) returns 3, and cdr(cons(3, 4)) returns 4. Given this implementation of cons:
+
+def cons(a, b):
+    def pair(f):
+        return f(a, b)
+    return pair
+
+Implement car and cdr."""
+
+
+def car(pair):
+    def cons(a, b):
+        return a
+    return pair(cons)
+
+
+def cdr(pair):
+    def cons(a, b):
+        return b
+    return pair(cons)
+
+
+"""Given the mapping a = 1, b = 2, ... z = 26, and an encoded message, count the number of ways it can be decoded.
+For example, the message '111' would give 3, since it could be decoded as 'aaa', 'ka', and 'ak'."""
+
+
+def possible_decodes(message):
+    if len(message) == 0:
+        return 0
+    else:
+        count = 1
+        for i, j in enumerate(message):                                     # runtime: O(n)
+            try:
+                if int(j) == 1 and int(message[i+1]):
+                    count += 1
+                elif int(j) == 2 and int(message[i+1]) not in [7, 8, 9]:
+                    count += 1
+            except:
+                continue
+        return count
+
+# runtime would be at worst O(n): linear
+
+
+"""Implement an autocomplete system. That is, given a query string s and a set of all possible query strings,
+return all strings in the set that have s as a prefix. For example, given the query string de and the set of strings
+[dog, deer, deal], return [deer, deal]."""
+
+
+def auto_system(set_of_strings, query_string):
+    new_list = []
+    length = len(query_string)
+    for string in set_of_strings:                               # runtime: O(n)
+        if length <= len(string):
+            if query_string == string[:length]:
+                new_list.append(string)
+    return new_list
+
+# runtime would be at worst O(n): linear
+
+
+"""There exists a staircase with N steps, and you can climb up either 1 or 2 steps at a time. Given N,
+write a function that returns the number of unique ways you can climb the staircase. The order of the steps matters.
+For example, if N is 4, then there are 5 unique ways:
+1, 1, 1, 1
+2, 1, 1
+1, 2, 1
+1, 1, 2
+2, 2"""
+
+
+def staircase(stairs_num):
+    if stairs_num <= 1:
+        return 1
+    return staircase(stairs_num - 1) + staircase(stairs_num - 2)
+
+# runtime would be O(n^2): quadratic
+
+
+"""Given a string of round, curly, and square open and closing brackets, return whether the brackets are balanced.
+For example, given the string "([])[]({})", return true. Given the string "([)]" or "((()", return false."""
+
+
+def balanced_string(str):
+    rb = 0
+    cb = 0
+    sb = 0
+
+    if str[0] == ")" or str[0] == "}" or str[0] == "]":
+        return False
+
+    if str[-1] == "(" or str[-1] == "{" or str[-1] == "[":
+        return False
+
+    for i in range(len(str)):           # runtime: O(n)
+        if str[i] == "(":
+            if str[i+1] == "}" or str[i+1] == "]":
+                return False
+            rb += 1
+        elif str[i] == "{":
+            cb += 1
+            if str[i+1] == "]" or str[i+1] == ")":
+                return False
+        elif str[i] == "[":
+            if str[i+1] == "}" or str[i+1] == ")":
+                return False
+            sb += 1
+        elif str[i] == ")":
+            rb -= 1
+            if rb == -1:
+                return False
+        elif str[i] == "}":
+            cb -= 1
+            if cb == -1:
+                return False
+        elif str[i] == "]":
+            sb -= 1
+            if sb == -1:
+                return False
+
+    return rb == 0 and cb == 0 and sb == 0
+
+
+# runtime would be at worst O(n): linear
+
+
+"""Run-length encoding is a fast and simple method of encoding strings. The basic idea is to represent repeated 
+successive characters as a single count and character. For example, the string "AAAABBBCCDAA" would be encoded 
+as "4A3B2C1D2A". Implement run-length encoding and decoding. You can assume the string to be encoded have no digits 
+and consists solely of alphabetic characters. You can assume the string to be decoded is valid."""
+
+
+class EncoderDecoder:
+    def __init__(self, val):
+        self.val = val
+
+    def encoding(self):
+        encoded_val = ""
+        counter = 0
+        for i, j in enumerate(self.val):
+            counter += 1
+            try:
+                if self.val[i] != self.val[i+1]:
+                    encoded_val += str(counter) + j
+                    counter -= counter
+            except:
+                encoded_val += str(counter) + j
+        self.val = encoded_val
+
+    def decoding(self):
+        decode_val = ""
+        for i, j in enumerate(self.val):
+            try:
+                if type(int(j)) == int:
+                    decode_val += str(self.val[i+1] * int(j))
+            except:
+                continue
+        self.val = decode_val
+
+
+"""Given a list of numbers and a number k, return whether any 2 numbers from the list add up to k."""
+
+
+def sums_to_k(lst, k):
+    for n in lst:
+        return k - n in lst
+
+
+# Bonus:
+def sums_to_k_2(lst, k):
+    return [(n, i) for n in lst for i in lst if i + n == k]      # list of the values that add to k and empty if none
+
+
+"""Compute the running median of a sequence of numbers. That is, given a stream of numbers,
+print out the median of the list so far on each new element.
+Recall that the median of an even-numbered list is the average of the two middle numbers.
+For example, given the sequence [2, 1, 5, 7, 2, 0, 5], your algorithm should print out:
+2
+1.5
+2
+3.5
+2
+2
+2
+"""
+
+
+def running_median(lst):
+    running_lst = []
+    for num in lst:
+        running_lst.append(num)
+        running_lst.sort()
+        if len(running_lst) % 2 == 0:
+            print((running_lst[(len(running_lst) // 2 - 1)] + running_lst[len(running_lst) // 2]) / 2)
+        else:
+            print(running_lst[len(running_lst) // 2])
+
+
+"""Given the root to a binary search tree, find the second largest node in the tree."""
+
+
+class BinaryNode:
+    def __init__(self, val):
+        self.val = val
+        self.l_child = None
+        self.r_child = None
+
+    def get_val(self):
+        return self.val
+
+    def get_l_child(self):
+        return self.l_child
+
+    def get_r_child(self):
+        return self.r_child
+
+    def set_l_child(self, child):
+        self.l_child = child
+
+    def set_r_child(self, child):
+        self.r_child = child
+
+
+class BinaryTree:
+    def __init__(self, val):
+        self.root = BinaryNode(val)
+
+    def add_element(self, val, current_node=None):
+        new_node = BinaryNode(val)
+        if current_node is None:
+            current_node = self.root
+        if current_node.get_val() > val:
+            if current_node.get_l_child() is None:
+                current_node.set_l_child(new_node)
+            else:
+                current_node = current_node.get_l_child()
+                self.add_element(val, current_node)
+        elif current_node.get_val() < val:
+            if current_node.get_r_child() is None:
+                current_node.set_r_child(new_node)
+            else:
+                current_node = current_node.get_r_child()
+                self.add_element(val, current_node)
+        else:
+            print("Node value already in tree! Value not added.")
+
+    def second_max_element(self):
+        if self.root.get_r_child() is None:
+            if self.root.get_l_child() is None:
+                return print("Only one value in tree")
+            else:
+                current_node = self.root.get_l_child()
+                while current_node.get_r_child() is not None:
+                    current_node = current_node.get_r_child()
+                return current_node.get_val()
+        else:
+            current_node = self.root
+            right_child = current_node.get_r_child()
+            while right_child.get_r_child() is not None:
+                current_node = current_node.get_r_child()
+                right_child = current_node.get_r_child()
+            return current_node.get_val()
+
+
+"""Given a string, find the palindrome that can be made by inserting the fewest number of characters as possible
+anywhere in the word. If there is more than one palindrome of minimum length that can be made, return the
+lexicographically earliest one (the first one alphabetically). For example, given the string "race", you should
+return "ecarace", since we can add three letters to it (which is the smallest amount to make a palindrome).
+There are seven other palindromes that can be made from "race" by adding three letters, but "ecarace" comes
+first alphabetically. As another example, given the string "google", you should return "elgoogle"."""
+
+
+def shortest_palindrome(str):
+    if len(str) <= 1:
+        return str
+
+    if is_palindrome(str):
+        return str
+
+    current_palindrome = ""
+    left_side_palindrome = ""
+    right_side_palindrome = ""
+    for i, j in enumerate(str):
+
+        if i != 0 and j == str[0]:
+            if is_palindrome(str[0: i+1]):
+                left_side_palindrome = str[0: i+1]
+
+        elif i != len(str)-1 and j == str[-1]:
+            if is_palindrome(str[i:]):
+                if len(str[i:]) > len(right_side_palindrome):
+                    right_side_palindrome = str[i:]
+
+    if len(left_side_palindrome) > len(right_side_palindrome):
+        for i in range(len(str) - len(left_side_palindrome)):
+            current_palindrome += str[-1 - i]
+        current_palindrome += str
+
+    elif len(left_side_palindrome) < len(right_side_palindrome):
+        current_palindrome += str
+        for i in range(len(str) - len(right_side_palindrome)):
+            string = str[0: len(str) - len(right_side_palindrome)]
+            current_palindrome += string[-1 - i]
+
+    else:
+        earliest_letter = check_letter(str)
+
+        if earliest_letter == str[0]:
+            current_palindrome += str
+            for i in range(len(str)-1):
+                current_palindrome += str[-2 - i]
+
+        elif earliest_letter == str[-1]:
+            for i in range(len(str) - 1):
+                current_palindrome += str[-1 - i]
+            current_palindrome += str
+
+    return current_palindrome
+
+
+def is_palindrome(str):
+    for i in range(len(str) // 2):
+        if str[i] != str[-1 - i]:
+            return False
+    return True
+
+
+def check_letter(str):
+    lower_str = str.lower()
+    earliest_letter = ""
+    conversions = {'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5, 'f': 6, 'g': 7, 'h': 8, 'i': 9, 'j': 10, 'k': 11, 'l': 12,
+                   'm': 13, 'n': 14, 'o': 15, 'p': 16, 'q': 17, 'r': 18, 's': 19, 't': 20, 'u': 21, 'v': 22, 'w': 23,
+                   'x': 24, 'y': 25, 'z': 26}
+
+    if conversions[lower_str[0]] < conversions[lower_str[-1]]:
+        earliest_letter += str[0]
+
+    elif conversions[lower_str[0]] > conversions[lower_str[-1]]:
+        earliest_letter += str[-1]
+
+    else:
+        next_letter = check_letter(str[1:-1])
+        if next_letter == str[1]:
+            earliest_letter += str[0]
+        elif next_letter == str[-2]:
+            earliest_letter += str[-1]
+
+    return earliest_letter
+
+
+"""Given an array of strictly the characters 'R', 'G', and 'B', segregate the values of the array
+so that all the Rs come first, the Gs come second, and the Bs come last.
+You can only swap elements of the array. Do this in linear time and in-place. For example,
+given the array ['G', 'B', 'R', 'R', 'B', 'R', 'G'], it should become ['R', 'R', 'R', 'G', 'G', 'B', 'B']."""
+
+
+def segregated_array(array):
+    while True:
+        left_index, right_index = 0, 1
+
+        while right_index is not len(array)-1:
+            if array[left_index] is 'B' or array[right_index] is 'R':
+                array[left_index], array[right_index] = array[right_index], array[left_index]
+            right_index += 1
+            left_index += 1
+
+        while left_index is not 0:
+            if array[left_index] is 'B' or array[right_index] is 'R':
+                array[left_index], array[right_index] = array[right_index], array[left_index]
+            right_index -= 1
+            left_index -= 1
+
+        counter = 0
+        for i in range(len(array) - 1):
+            if array[i] != array[i+1]:
+                counter += 1
+
+        print(counter)
+
+        if counter <= 2:
+            break
+
+    return array
+
+
+"""Conway's Game of Life takes place on an infinite two-dimensional board of square cells.
+Each cell is either dead or alive, and at each tick, the following rules apply:
+Any live cell with less than two live neighbours dies.
+Any live cell with two or three live neighbours remains living.
+Any live cell with more than three live neighbours dies.
+Any dead cell with exactly three live neighbours becomes a live cell.
+A cell neighbours another cell if it is horizontally, vertically, or diagonally adjacent.
+
+Implement Conway's Game of Life. It should be able to be initialized with a starting list of live cell coordinates
+and the number of steps it should run for. Once initialized, it should print out the board state at each step.
+Since it's an infinite board, print out only the relevant coordinates, i.e. from the top-leftmost live cell to
+bottom-rightmost live cell."""
+
+
+def conway_game(starting_list, n):
+    live_cells = starting_list
+    for i in range(n):
+        cells_to_remove = []
+        cells_to_add = []
+        adjacent_dict = {}
+
+        for cell in live_cells:
+            neighbours = adjacent_cells(cell[0], cell[1])
+            live_neighbours = 0
+
+            for neighbour in neighbours:
+                adjacent_dict.setdefault(str(neighbour), [neighbour, 0])
+                adjacent_dict[str(neighbour)][1] += 1
+
+                if neighbour in live_cells:
+                    live_neighbours += 1
+
+            if live_neighbours < 2 or live_neighbours > 3:
+                cells_to_remove.append(cell)
+
+        for cell in adjacent_dict:
+            if adjacent_dict[cell][1] == 3 and adjacent_dict[cell][0] not in live_cells:
+                cells_to_add.append(adjacent_dict[cell][0])
+
+        for cell in cells_to_remove:
+            live_cells.remove(cell)
+        live_cells += cells_to_add
+
+        print(live_cells)
+
+    return
+
+
+def adjacent_cells(x, y):
+    neighbours = [[0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1], [-1, 0], [-1, 1]]
+    for i in neighbours:
+        i[0] += x
+        i[1] += y
+
+    return neighbours
+
+
+"""The edit distance between two strings refers to the minimum number of character insertions, deletions,
+and substitutions required to change one string to the other. For example, the edit distance between
+“kitten” and “sitting” is three: substitute the “k” for “s”, substitute the “e” for “i”, and append a “g”.
+Given two strings, compute the edit distance between them."""
+
+
+def edit_distance(str_1, str_2):
+    distance = 0
+    if len(str_1) == len(str_2):
+        short = len(str_1)
+        diff = 0
+    else:
+        short = min(len(str_1), len(str_2))
+        diff = abs(len(str_1) - len(str_2))
+    for i in range(short):
+        if str_1[i] != str_2[i]:
+            distance += 1
+    distance += diff
+
+    return distance
+
+
+"""Given an unordered list of flights taken by someone, each represented as (origin, destination) pairs, and a starting
+airport, compute the person's itinerary. If no such itinerary exists, return null. If there are multiple possible
+itineraries, return the lexicographically smallest one. All flights must be used in the itinerary. For example, given
+the list of flights [('SFO', 'HKO'), ('YYZ', 'SFO'), ('YUL', 'YYZ'), ('HKO', 'ORD')] and starting  airport 'YUL', you
+should return the list ['YUL', 'YYZ', 'SFO', 'HKO', 'ORD']. Given the list of flights [('SFO', 'COM'), ('COM', 'YYZ')]
+and starting airport 'COM', you should return null. Given the list of flights [('A', 'B'), ('A', 'C'), ('B', 'C'),
+('C', 'A')] and starting airport 'A', you should return the list ['A', 'B', 'C', 'A', 'C'] even though
+['A', 'C', 'A', 'B', 'C'] is also a valid itinerary. However, the first one is lexicographically smaller."""
+
+
+def shortest_route(stops, start):
+    current_pos = start
+    short_route = [start]
+
+    while len(stops) != 0:
+        possible_stop = []
+
+        for stop in stops:
+            if stop[0] is current_pos:
+                possible_stop.append(stop)
+
+        if len(possible_stop) is 0:
+            return None
+
+        elif len(possible_stop) is 1:
+            current_pos = possible_stop[0][1]
+            short_route.append(current_pos)
+            stops.remove(possible_stop[0])
+
+        else:
+            lex_small = '   '
+            for pos in possible_stop:
+                lex_small = get_first_letter(lex_small, pos[1])
+            stops.remove((current_pos, lex_small))
+            current_pos = lex_small
+            short_route.append(current_pos)
+
+    return short_route
+
+
+def get_first_letter(str_1, str_2):
+    low_1, low_2 = str_1.lower(), str_2.lower()
+    conversions = {'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5, 'f': 6, 'g': 7, 'h': 8, 'i': 9, 'j': 10, 'k': 11, 'l': 12,
+                   'm': 13, 'n': 14, 'o': 15, 'p': 16, 'q': 17, 'r': 18, 's': 19, 't': 20, 'u': 21, 'v': 22, 'w': 23,
+                   'x': 24, 'y': 25, 'z': 26, ' ': 27}
+
+    for i in range(len(low_1)):
+        if conversions[low_1[i]] < conversions[low_2[i]]:
+            return str_1
+        elif conversions[low_1[i]] > conversions[low_2[i]]:
+            return str_2
+
+
+"""Given a list of integers S and a target number k, write a function that returns a subset of S that adds up to k.
+If such a subset cannot be made, then return null. Integers can appear more than once in the list.
+You may assume all numbers in the list are positive. For example, given S = [12, 1, 61, 5, 9, 2] and k = 24,
+return [12, 9, 2, 1] since it sums up to 24."""
+
+
+def adds_to_k(subset, k):
+    work_list = sorted(subset)
+    subset_list = []
+
+    while len(work_list) is not 0:
+        subset_list = check_subset(work_list, subset_list, k)
+
+        if len(subset_list) is not 0:
+            return subset_list
+        work_list.pop()
+    return None
+
+
+def check_subset(subset, subset_list, k):
+    work_list = []
+
+    for i in subset:
+        if i <= k:
+            work_list.append(i)
+
+    if len(subset) is 0:
+        return []
+
+    if k is work_list[-1]:
+        return [k]
+
+    big_vs_k = k - work_list[-1]
+    subset_list = check_subset(work_list[:-1], subset_list, big_vs_k)
+
+    if len(subset_list) is not 0:
+        subset_list.append(work_list[-1])
+
+    return subset_list
+
+
+"""Implement a stack that has the following methods: push(val), which pushes an element onto the stack
+pop(), which pops off and returns the topmost element of the stack. If there are no elements in the stack,
+then it should throw an error or return null. max(), which returns the maximum value in the stack currently. If there
+are no elements in the stack, then it should throw an error or return null. Each method should run in constant time."""
+
+
+class Node:
+    def __init__(self, val, nn=None):
+        self.val = val
+        self.nn = nn
+
+    def get_val(self):
+        return self.val
+
+    def get_nn(self):
+        return self.nn
+
+    def set_nn(self, nn):
+        self.nn = nn
+
+
+class Stack:
+    def __init__(self, val, size=1):
+        self.hn = Node(val)
+        self.size = size
+
+    def push(self, val):
+        new_node = Node(val)
+        new_node.set_nn(self.hn)
+        self.hn = new_node
+        self.size += 1
+
+    def pop(self):
+        if self.size is 0:
+            return None
+
+        current_node = self.hn
+        self.hn = current_node.get_nn()
+
+        self.size -= 1
+
+        return current_node.get_val()
+
+    def max(self):
+        if self.size is 0:
+            return None
+        return self.size
+
+
+"""Given an array of time intervals (start, end) for classroom lectures (possibly overlapping),
+find the minimum number of rooms required. For example, given [(30, 75), (0, 50), (60, 150)], you should return 2."""
+
+
+def min_classrooms(times):
+    classrooms = len(times)
+    start = []
+    end = []
+    for i in times:
+        start.append(i[0])
+        end.append(i[1])
+    start.sort()
+    end.sort()
+
+    while start[-1] >= end[0]:
+
+        for i in start:
+            for j in end:
+                if i >= j:
+                    classrooms -= 1
+                    start.remove(i)
+                    end.remove(j)
+
+    return classrooms
+
+
+"""You are given an M by N matrix consisting of booleans that represents a board. Each True boolean represents a wall.
+Each False boolean represents a tile you can walk on. Given this matrix, a start coordinate, and an end coordinate,
+return the minimum number of steps required to reach the end coordinate from the start. If there is no possible path,
+then return null. You can move up, left, down, and right. You cannot move through walls. You cannot wrap around the
+edges of the board. For example, given the following board:
+[[f, f, f, f],
+[t, t, f, t],
+[f, f, f, f],
+[f, f, f, f]]
+and start = (3, 0) (bottom left) and end = (0, 0) (top left), the minimum number of steps required to reach the end is
+7, since we would need to go through (1, 2) because there is a wall everywhere else on the second row."""
+
+
+def quick_route(board, start, end):
+    steps = 0
+
+    start_l = [start]
+    end_l = [end]
+
+    while True:
+        length = len(start_l)
+        for i in range(len(start_l)):
+
+            adjacent_tiles = get_adjacent_tiles(start_l[i][0], start_l[i][1])
+
+            for tile in adjacent_tiles:
+                if inside_board(board, tile[0], tile[1]):
+                    if not board[tile[0]][tile[1]]:
+                        if [tile[0], tile[1]] not in start_l:
+                            start_l.append(tile)
+
+        steps += 1
+
+        for cor in start_l:
+            if cor in end_l:
+                return steps
+
+        if length is len(start_l):
+            return None
+
+
+def get_adjacent_tiles(x, y):
+    neighbours = [[0, 1], [1, 0], [0, -1], [-1, 0]]
+    adjacent_tiles = []
+    for n in neighbours:
+        adjacent_tiles.append([n[0] + x, n[1] + y])
+
+    return adjacent_tiles
+
+
+def inside_board(board, x, y):
+    return 0 <= x <= len(board[0]) - 1 and 0 <= y <= len(board) - 1
+
+
+print(quick_route([[False, False, False, False],
+                   [True, True, False, True],
+                   [False, False, False, False],
+                   [False, False, False, False]],
+                  [3, 0], [0, 0]))
+
+
+"""Using a function rand5() that returns an integer from 1 to 5 (inclusive) with uniform probability,
+implement a function rand7() that returns an integer from 1 to 7 (inclusive)."""
+import random
+
+
+def rand7():
+    rand67 = random.randint(6, 7)
+    return random.choice((rand5(), rand67))
+
+
+def rand5():
+    return random.randint(1, 5)
+
+
+"""We can determine how "out of order" an array A is by counting the number of inversions it has. Two elements A[i] and
+A[j] form an inversion if A[i] > A[j] but i < j. That is, a smaller element appears after a larger element. Given an
+array, count the number of inversions it has. Do this faster than O(N^2) time. You may assume each element in the array
+is distinct. For example, a sorted list has zero inversions. The array [2, 4, 1, 3, 5] has three inversions:
+(2, 1), (4, 1), and (4, 3). The array [5, 4, 3, 2, 1] has ten inversions: every distinct pair forms an inversion."""
+
+
+def num_inversions(array):
+    count = 0
+    while len(array) != 0:
+        num = array[0]
+        for i in array[1:]:
+            if num > i:
+                count += 1
+        array.remove(array[0])
+
+    return count
+
+
+"""Given a string, find the longest palindromic contiguous substring.
+If there are more than one with the maximum length, return any one. For example,
+the longest palindromic substring of "aabcdcb" is "bcdcb". The longest palindromic substring of "bananas" is "anana"."""
+
+
+def palindromic_substring(string):
+    length = len(string)
+    while length != 0:
+        for i in range(len(string) + 1 - length):
+            if is_palindrome(string[i:length+i]):
+                return string[i:length+i]
+        length -= 1
+
+
+def is_palindrome(string):
+    if len(string) <= 1:
+        return True
+
+    if string[0] == string[-1] and is_palindrome(string[1:-1]):
+        return True
+
+    return False
+
+
+"""Given a dictionary of words and a string made up of those words (no spaces), return the original sentence in a list.
+If there is more than one possible reconstruction, return any of them. If there is no possible reconstruction,
+then return null. For example, given the set of words 'quick', 'brown', 'the', 'fox', and the string "thequickbrownfox",
+ you should return ['the', 'quick', 'brown', 'fox']. Given the set of words 'bed', 'bath', 'bedbath', 'and', 'beyond',
+ and the string "bedbathandbeyond", return either ['bed', 'bath', 'and', 'beyond] or ['bedbath', 'and', 'beyond']."""
+
+
+def str_dict_sentence(dictionary, string):
+    ori_list = []
+    for i in dictionary:
+        length = len(dictionary[i])
+        for j in range(len(string)):
+            if string[j: j + length] == dictionary[i]:
+                ori_list.append(dictionary[i])
+                string = string[0:j] + string[j + length:]
+
+    if len(string) != 0:
+        return None
+
+    return ori_list
+
+
+"""Given a array of numbers representing the stock prices of a company in chronological order,
+write a function that calculates the maximum profit you could have made from buying and selling that stock once.
+You must buy before you can sell it. For example, given [9, 11, 8, 5, 7, 10], you should return 5,
+since you could buy the stock at 5 dollars and sell it at 10 dollars."""
+
+
+def stock_trader(prices):
+    best_trade = 0
+    low_point = 0, prices[0]
+    high_point = 0, prices[0]
+
+    for i, j in enumerate(prices):
+        if j < low_point[1]:
+            low_point = i, j
+
+        if j > high_point[1] or low_point[0] > high_point[0]:
+            high_point = i, j
+
+        if low_point[0] < high_point[0] and high_point[1] - low_point[1] > best_trade:
+            best_trade = high_point[1] - low_point[1]
+
+    return best_trade
+
+
+"""Given pre-order and in-order traversals of a binary tree, write a function to reconstruct the tree.
+For example, given the following preorder traversal:
+[a, b, d, e, c, f, g]
+And the following inorder traversal:
+[d, b, e, a, f, c, g]
+You should return the following tree:
+    a
+   / \
+  b   c
+ / \ / \
+d  e f  g
+"""
+
+
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.left_child = None
+        self.right_child = None
+
+
+def reconstructing(pre_order, in_order):
+    root = Node(pre_order[0])
+    root_index = in_order.index(pre_order[0])
+    pre_order.remove(pre_order[0])
+
+    current_node = root
+    current_index = root_index
+
+    while len(pre_order) is not 0:
+
+        if in_order.index(pre_order[0]) < current_index:
+            if current_node.left_child is None:
+                current_node.left_child = Node(pre_order[0])
+                pre_order.remove(pre_order[0])
+            else:
+                current_node = current_node.left_child
+
+        elif in_order.index(pre_order[0]) > current_index:
+            if current_node.right_child is None:
+                current_node.right_child = Node(pre_order[0])
+                pre_order.remove(pre_order[0])
+
+            else:
+                current_node = current_node.right_child
+
+    return root
+
+
+"""Given an array of numbers, find the maximum sum of any contiguous subarray of the array. For example, given the array
+[34, -50, 42, 14, -5, 86], the maximum sum would be 137, since we would take elements 42, 14, -5, and 86. Given the
+array [-5, -1, -8, -9], the maximum sum would be 0, since we would not take any elements. Do this in O(N) time."""
+
+
+def max_sum_array(array):
+    max_sum = 0
+    count_hold = 0
+    count = 0
+
+    for num in array:
+        if count + num < 0:
+            if count_hold is 0:
+                if max_sum < count:
+                    max_sum = count
+                count = 0
+            elif count_hold > count * -1:
+                if count > 0:
+                    count_hold += count
+                    count = 0
+                count += num
+            else:
+                if max_sum < count_hold:
+                    max_sum = count_hold
+                count_hold = 0
+                count = 0
+
+        elif count + num < count:
+            if count_hold is 0:
+                count_hold = count
+                count = num
+            elif count_hold > 0:
+                count_hold += count
+                count = num
+
+        else:
+            count += num
+
+    if count > 0:
+        count_hold += count
+
+    if max_sum < count_hold:
+        max_sum = count_hold
+
+    return max_sum
+
+
+"""Suppose an arithmetic expression is given as a binary tree. Each leaf is an integer and each internal node is
+one of '+', '−', '∗', or '/'. Given the root to such a tree, write a function to evaluate it.
+For example, given the following tree:
+    *
+   / \
+  +    +
+ / \  / \
+3  2  4  5
+You should return 45, as it is (3 + 2) * (4 + 5)."""
+
+
+class BinaryTreeNode:
+    def __init__(self, data):
+        self.data = data
+        self.left_child = None
+        self.right_child = None
+
+
+root = BinaryTreeNode('*')
+a = BinaryTreeNode('+')
+b = BinaryTreeNode('+')
+
+a1 = BinaryTreeNode(3)
+a2 = BinaryTreeNode(2)
+b1 = BinaryTreeNode(4)
+b2 = BinaryTreeNode(5)
+
+root.left_child = a
+root.right_child = b
+a.left_child = a1
+a.right_child = a2
+b.left_child = b1
+b.right_child = b2
+
+
+def arithmetic_expression(node):
+    if type(node.data) == int:
+        return node.data
+
+    elif type(node.data) == str:
+        if node.data is '+':
+            node.data = arithmetic_expression(node.left_child) + arithmetic_expression(node.right_child)
+
+        elif node.data is '-':
+            node.data = arithmetic_expression(node.left_child) - arithmetic_expression(node.right_child)
+
+        elif node.data is '*':
+            node.data = arithmetic_expression(node.left_child) * arithmetic_expression(node.right_child)
+
+        elif node.data is '/':
+            node.data = arithmetic_expression(node.left_child) / arithmetic_expression(node.right_child)
+
+        return node.data
+
+
+"""Given two singly linked lists that intersect at some point, find the intersecting node. The lists are non-cyclical.
+For example, given A = 3 -> 7 -> 8 -> 10 and B = 99 -> 1 -> 8 -> 10, return the node with value 8.
+In this example, assume nodes with the same value are the exact same node objects.
+Do this in O(M + N) time (where M and N are the lengths of the lists) and constant space."""
+
+
+class Node:
+    def __init__(self, data, nn=None):
+        self.data = data
+        self.nn = nn
+
+class LinkedList:
+    def __init__(self, hn_data):
+        self.hn = Node(hn_data)
+        self.size = 1
+
+    def add(self, data):
+        new_node = Node(data)
+        new_node.nn = self.hn
+        self.hn = new_node
+        self.size += 1
+
+A = LinkedList(10)
+A.add(8)
+A.add(7)
+A.add(3)
+
+B = LinkedList(10)
+B.add(8)
+B.add(1)
+B.add(99)
+B.add(100)
+
+
+def intersection(ll_1, ll_2):
+    difference = abs(ll_1.size - ll_2.size)
+
+    if difference != 0:
+        if ll_1.size > ll_2.size:
+            for i in range(difference):
+                ll_1.hn = ll_1.hn.nn
+        elif ll_1.size < ll_2.size:
+            for i in range(difference):
+                ll_2.hn = ll_2.hn.nn
+
+    while ll_1.hn.nn is not None:
+        if ll_1.hn.data == ll_2.hn.data:
+            return ll_1.hn
+        ll_1.hn = ll_1.hn.nn
+        ll_2.hn = ll_2.hn.nn
+
+    return print("Does not intersect!")
+
+
+"""Given a function that generates perfectly random numbers between 1 and k (inclusive), where k is an input,
+write a function that shuffles a deck of cards represented as an array using only swaps. It should run in O(N) time."""
+import random
+
+def shuffle(k):
+    deck = [i for i in range(52)]
+
+    for i, j in enumerate(deck):
+        swap_index = random.randint(1, k)
+
+        if swap_index >= 52:
+            swap_index = swap_index % 51
+
+        deck[i], deck[swap_index] = deck[swap_index], j
+
+    return deck
+
+
+"""Given an array of integers and a number k, where 1 <= k <= length of the array, compute the maximum values of each
+subarray of length k. For example, given array = [10, 5, 2, 7, 8, 7] and k = 3, we should get: [10, 7, 8, 8], since:
+10 = max(10, 5, 2)
+7 = max(5, 2, 7)
+8 = max(2, 7, 8)
+8 = max(7, 8, 7)
+Do this in O(n) time and O(k) space. You can modify the input array in-place and you do not need to store the results.
+You can simply print them out as you compute them."""
+
+array = [10, 5, 2, 7, 8, 7]
+k = 3
+
+for i in range(len(array) - k + 1):
+    print(max(array[i:i+k]))
+
+
+"""Given a stream of elements too large to store in memory,
+pick a random element from the stream with uniform probability."""
+import random
+
+
+def pick(stream):
+    random_element = None
+
+    for i, j in enumerate(stream):
+        if i == 0:
+            random_element = j
+        elif random.randint(1, i + 1) == 1:
+            random_element = j
+
+    return random_element
+
+
+"""Given an integer k and a string s, find the length of the longest substring that contains at most k distinct
+characters. For example, given s = "abcba" and k = 2, the longest substring with k distinct characters is "bcb"."""
+
+
+def longest_distinct_substring(string, k):
+    substring = ""
+    working_list = []
+
+    for i in string:
+        working_list.append(i)
+
+        dict_test = {}
+
+        for j in working_list:
+            dict_test.setdefault(j, 0)
+
+        while len(dict_test) > k:
+            working_list.remove(working_list[0])
+            dict_test = {}
+            for j in working_list:
+                dict_test.setdefault(j, 0)
+
+        if len(working_list) > len(substring):
+            substring = ""
+            for j in working_list:
+                substring += j
+
+    return substring
+
+
+"""Implement an LRU (Least Recently Used) cache. It should be able to be initialized with a cache size n,
+and contain the following methods: set(key, value): sets key to value. If there are already n items in the cache
+and we are adding a new item, then it should also remove the least recently used item. get(key):
+gets the value at key. If no such key exists, return null. Each operation should run in O(1) time."""
+
+
+class Node:
+    def __init__(self, key, value, next=None):
+        self.key = key
+        self.value = value
+        self.next = next
+
+
+class Cache:
+    def __init__(self, n):
+        self.max_size = n
+        self.size = 0
+        self.head_node = None
+
+    def set(self, key, value):
+
+        if self.max_size == 0:
+            return print("The defined cache space is 0.")
+
+        if self.max_size == 1:
+            if self.head_node is not None:
+                print("Had to remove least used key and value.")
+            self.head_node = Node(key, value)
+            self.size = 1
+            return
+
+        if self.head_node is None:
+            self.head_node = Node(key, value)
+            self.size += 1
+            return
+
+        if self.size == self.max_size:
+            current_node = self.head_node
+            while current_node.next.next is not None:
+                current_node = current_node.next
+            current_node.next = None
+            self.size -= 1
+            print("Had to remove least used key and value.")
+
+        new_node = Node(key, value)
+        new_node.next = self.head_node
+        self.head_node = new_node
+        self.size += 1
+
+    def get(self, key):
+
+        if self.max_size == 0:
+            return print("The defined cache space is 0.")
+
+        current_node = self.head_node
+
+        while current_node.key != key:
+            if current_node.next is None:
+                return None
+            current_node = current_node.next
+
+        return current_node.value
+
+
+"""Implement a queue using two stacks. Recall that a queue is a FIFO (first-in, first-out) data structure with
+the following methods: enqueue, which inserts an element into the queue, and dequeue, which removes it."""
+
+
+class Node:
+    def __init__(self, data, next_node=None):
+        self.data = data
+        self.next_node = next_node
+
+
+class Stack:
+    def __init__(self):
+        self.head_node = None
+        self.size = 0
+
+    def push(self, val):
+        if self.head_node is None:
+            self.head_node = Node(val)
+            self.size += 1
+
+        else:
+            new_node = Node(val, self.head_node)
+            self.head_node = new_node
+            self.size += 1
+
+
+class Queue:
+    def __init__(self):
+        self.head_node = None
+        self.size = 0
+
+    def enqueue(self, sta1, sta2):
+        if sta1.size == 0:
+            print("No elements in stack")
+        else:
+            self.head_node = sta1.head_node
+            self.size = sta1.size
+
+        if sta2.size == 0:
+            print("No elements in stack")
+
+        else:
+            new_element = sta2.head_node
+            while new_element.next_node is not None:
+                new_element = new_element.next_node
+            new_element.next_node = self.head_node
+            self.head_node = sta2.head_node
+            self.size += sta2.size
+
+    def dequeue(self):
+        if self.size == 0:
+            print("No elements in queue")
+
+        elif self.size == 1:
+            print("Removing {} from the queue.".format(self.head_node.data))
+            self.head_node = None
+
+        else:
+            element_to_dequeue = self.head_node
+            while element_to_dequeue.next_node.next_node is not None:
+                element_to_dequeue = element_to_dequeue.next_node
+            print("Removing {} from the queue.".format(element_to_dequeue.next_node.data))
+            element_to_dequeue.next_node = None
+            self.size -= 1
+
+
+"""Implement a URL shortener with the following methods: shorten(url), which shortens the url into a six-character
+alphanumeric string, such as zLg6wl. restore(short), which expands the shortened string into the original url.
+If no such shortened string exists, return null."""
+import random
+import string
+
+
+class URLshortener:
+
+    def __init__(self):
+        self.holder = {}
+        self.size = 0
+
+    def shorten(self, url):
+
+        key = ''.join(random.choices(string.ascii_letters + string.digits, k=6))
+
+        if key in self.holder:
+            return print("Key occupied. Try again")
+
+        self.holder[key] = url
+        print("Added the URL: {} - it's access key is: {}".format(url, key))
+        self.size += 1
+        return key
+
+    def restore(self, key):
+
+        if self.size == 0:
+            return print("No URLs in the holder.")
+
+        if key not in self.holder:
+            return None
+
+        print("The key: {} returns the URL: {}".format(key, self.holder[key]))
+        url = self.holder[key]
+        self.holder.pop(key)
+        self.size -= 1
+        return url
+
+
+"""Given a string s and an integer k, break up the string into multiple lines such that each line has a length of k or
+less. You must break it up so that words don't break across lines. Each line has to have the maximum possible amount of
+words. If there's no way to break the text up, then return null. You can assume that there are no spaces at the ends of
+the string and that there is exactly one space between each word. For example, given the string "the quick brown fox
+jumps over the lazy dog" and k = 10, you should return: ["the quick", "brown fox", "jumps over", "the lazy", "dog"].
+No string in the list has a length of more than 10."""
+
+
+def str_break_up(s, k):
+    current_list = []
+    current_sentence = ""
+    current_word = ""
+    for i, j in enumerate(s):
+        current_word += j
+
+        if j == " ":
+            current_sentence += current_word
+            current_word = ""
+
+        if i % k == 0 and i != 0:
+            if len(current_sentence) == 0:
+                return None
+            if current_sentence[-1] == " ":
+                current_list.append(current_sentence[:-1])
+            else:
+                current_list.append(current_sentence)
+            current_sentence = ""
+
+    if (len(current_sentence) + len(current_word) != 0) < k:
+        current_sentence += current_word
+        current_word = ""
+
+    if len(current_sentence) != 0:
+        current_list.append(current_sentence)
+
+    if len(current_word) != 0:
+        current_list.append(current_word)
+
+    return current_list
+
+
+"""A sorted array of integers was rotated an unknown number of times. Given such an array, find the index of the
+element in the array in faster than linear time. If the element doesn't exist in the array, return null. For example,
+given the array [13, 18, 25, 2, 8, 10] and the element 8, return 4 (the index of 8 in the array).
+You can assume all the integers in the array are unique."""
+
+
+def rotated_array(array, e):
+    if array[0] == e:
+        return 0
+    if array[len(array)//2] == e:
+        return len(array)//2
+    if array[0] < e < array[len(array)//2]:
+        return rotated_array(array[1:len(array)//2], e)
+    else:
+        return rotated_array(array[len(array)//2:], e) + len(array[:len(array)//2])
+
+
+"""Given a multiset of integers, return whether it can be partitioned into two subsets whose sums are the same.
+For example, given the multiset {15, 5, 20, 10, 35, 15, 10}, it would return true, since we can split it up into
+{15, 5, 10, 15, 10} and {20, 35}, which both add up to 55. Given the multiset {15, 5, 20, 10, 35},
+it would return false, since we can't split it up into two subsets that add up to the same sum."""
+
+
+def equal_subsets(multiset):
+    sum_list = 0
+
+    for num in multiset:
+        sum_list += num
+
+    if sum_list % 2 != 0:
+        return False
+
+    half_sum = sum_list / 2
+    smallest_subset = len(multiset) // 2
+
+    return has_sum(multiset, half_sum, smallest_subset)
+
+
+def has_sum(subset, k, size):
+    if k in subset:
+        return True
+    else:
+        if size == 1:
+            return False
+        for num in subset:
+            subset.remove(num)
+            if has_sum(subset, k-num, size-1):
+                return True
+        return False
+
+
+"""Implement integer exponentiation. That is, implement the pow(x, y) function, where x and y are integers and returns
+x^y. Do this faster than the naive method of repeated multiplication. For example, pow(2, 10) should return 1024."""
+
+
+def pow(x, y):
+    if y == 0:
+        return 1
+
+    half = pow(x, int(y / 2))
+
+    if y % 2 == 0:
+        return half * half
+
+    else:
+        return half * half * x
+
+
+"""There is an N by M matrix of zeroes. Given N and M, write a function to count the number of ways of starting at the 
+top-left corner and getting to the bottom-right corner. You can only move right or down. For example, given a 2 by 2 
+matrix, you should return 2, since there are two ways to get to the bottom-right: Right, then down. Down, then right.
+Given a 5 by 5 matrix, there are 70 ways to get to the bottom-right."""
+
+
+def ways_in_matrix(n, m):
+    if n == 1 or m == 1:
+        return 1
+
+    return ways_in_matrix(n - 1, m) + ways_in_matrix(n, m - 1)
+
+
+"""Given a 2D matrix of characters and a target word, write a function that returns whether the word can be found in 
+the matrix by going left-to-right, or up-to-down. For example, given the following matrix:
+[['F', 'A', 'C', 'I'],
+ ['O', 'B', 'Q', 'P'],
+ ['A', 'N', 'O', 'B'],
+ ['M', 'A', 'S', 'S']]
+and the target word 'FOAM', you should return true, since it's the leftmost column. Similarly, 
+given the target word 'MASS', you should return true, since it's the last row."""
+
+
+def matrix_words(matrix, word):
+    vedical_word = ""
+    latteral_word = ""
+
+    for i, j in enumerate(matrix):
+        for k in range(len(j)):
+            vedical_word += matrix[k][i]
+            latteral_word += matrix[i][k]
+
+            if vedical_word == word or latteral_word == word:
+                return True
+
+            if len(vedical_word) == len(matrix[0]):
+                vedical_word = ""
+
+            if len(latteral_word) == len(matrix[0]):
+                latteral_word = ""
+
+    return False
+
+
+"""Given a N by M matrix of numbers, print out the matrix in a clockwise spiral.
+For example, given the following matrix:
+[[1,  2,  3,  4,  5],
+ [6,  7,  8,  9,  10],
+ [11, 12, 13, 14, 15],
+ [16, 17, 18, 19, 20]]
+You should print out the following:
+1
+2
+3
+4
+5
+10
+15
+20
+19
+18
+17
+16
+11
+6
+7
+8
+9
+14
+13
+12"""
+
+
+def clockwise_print(n, m):
+    matrix = [[0 for _ in range(n)] for _ in range(m)]
+
+    for i, row in enumerate(matrix):
+        for j, col in enumerate(row):
+            matrix[i][j] = i * n + j + 1
+
+    low_x = 0
+    high_x = n
+    low_y = 0
+    high_y = m
+
+
+
+    while low_x < high_x and low_y < high_y:
+        for i in range(low_x, high_x):
+            print(matrix[low_y][i])
+
+        low_y += 1
+
+        for i in range(low_y, high_y):
+            print(matrix[i][high_x - 1])
+
+        high_x -= 1
+
+        if low_y < high_y:
+
+            for i in range(high_x - low_x):
+                print(matrix[high_y - 1][high_x - 1 - i])
+
+            high_y -= 1
+
+        if low_x < high_x:
+
+            for i in range(low_y, high_y):
+                print(matrix[high_y - i][low_x])
+
+            low_x += 1
+
+
+"""Assume you have access to a function toss_biased() which returns 0 or 1 with a probability that's not 50-50 (but
+also not 0-100 or 100-0). You do not know the bias of the coin. Write a function to simulate an unbiased coin toss."""
+import random
+
+def unbiased_toss(eq):
+    val = 0
+    for _ in range(100000):
+        val += eq
+    val * 13
+    val//10
+    val % 100
+    if val < 50:
+        return 0
+    return 1
+
+
+def toss_biased():
+    num = random.randint(1, 10)
+    if num < 5:
+        return 0
+    return 1
+
+
+"""Implement an LFU (Least Frequently Used) cache. It should be able to be initialized with a cache size n,
+and contain the following methods: set(key, value): sets key to value. If there are already n items in the cache
+and we are adding a new item, then it should also remove the least frequently used item. If there is a tie,
+then the least recently used key should be removed. get(key): gets the value at key. If no such key exists,
+return null. Each operation should run in O(1) time."""
+
+
+class Node:
+    def __init__(self, key, value, next_node=None):
+        self.key = key
+        self.value = value
+        self.next_node = next_node
+
+
+class Cache:
+    def __init__(self, n):
+        self.max_size = n
+        self.size = 0
+        self.head = None
+        self.tail = None
+
+    def set(self, key, value):
+        if self.size == self.max_size:
+            print("Removing {} due to space".format(self.head.key))
+            self.head = self.head.next_node
+            self.size -= 1
+
+        if self.head is None:
+            self.head = Node(key, value)
+            self.tail = self.head
+            self.size += 1
+
+        else:
+            self.tail.next_node = Node(key, value)
+            self.tail = self.tail.next_node
+            self.size += 1
+
+    def get(self, key):
+        value_to_return = None
+
+        current_node = self.head
+
+        while current_node is not None:
+
+            if current_node.key == key:
+                value_to_return = current_node.value
+
+            current_node = current_node.next_node
+
+        return value_to_return
+
+
+"""On our special chessboard, two bishops attack each other if they share the same diagonal. This includes bishops that
+have another bishop located between them, i.e. bishops can attack through pieces. You are given N bishops, represented
+as (row, column) tuples on a M by M chessboard. Write a function to count the number of pairs of bishops that attack
+each other. The ordering of the pair doesn't matter: (1, 2) is considered the same as (2, 1).
+For example, given M = 5 and the list of bishops:
+(0, 0)
+(1, 2)
+(2, 2)
+(4, 0)
+The board would look like this:
+[b 0 0 0 0]
+[0 0 b 0 0]
+[0 0 b 0 0]
+[0 0 0 0 0]
+[b 0 0 0 0]
+You should return 2, since bishops 1 and 3 attack each other, as well as bishops 3 and 4."""
+
+
+def special_chessboard(n, m):
+    attacking_bishops = []
+
+    bishop_list = []
+
+    for bishop in n:
+        bishop_list.append(list(bishop))
+
+    for i, piece in enumerate(bishop_list):
+        valid_targets = targets(piece, m)
+
+        for target in valid_targets:
+            for bishop in bishop_list:
+                if target == bishop:
+                    if [i, bishop_list.index(target)] not in attacking_bishops and \
+                            [bishop_list.index(target), i] not in attacking_bishops:
+                        attacking_bishops.append([i, bishop_list.index(target)])
+
+    return len(attacking_bishops)
+
+
+def inside_board(poss, m):
+    x, y = poss
+    return 0 <= x < m and 0 <= y < m
+
+
+def targets(piece, m):
+    target_list = []
+
+    directions = [[1, 1], [1, -1], [-1, -1], [-1, 1]]
+
+    for direction in directions:
+        for i in range(m):
+            x, y = piece
+
+            if direction[0] == -1:
+                x += -1 - i
+            else:
+                x += 1 + i
+            if direction[1] == -1:
+                y += -1 - i
+            else:
+                y += 1 + i
+
+            target = [x, y]
+
+            if inside_board(target, m):
+
+                target_list.append(target)
+
+    return target_list
+
+
+"""Given a list of integers, return the largest product that can be made by multiplying any three integers.
+For example, if the list is [-10, -10, 5, 2], we should return 500, since that's -10 * -10 * 5."""
+
+
+def largest_product(ints):
+    high_1 = 0
+    high_2 = 0
+    high_3 = 0
+
+    low_1 = 0
+    low_2 = 0
+
+    for n in ints:
+        if n >= high_1:
+            high_3 = high_2
+            high_2 = high_1
+            high_1 = n
+
+        elif n >= high_2:
+            high_3 = high_2
+            high_2 = n
+
+        elif n >= high_3:
+            high_3 = n
+
+        if n <= low_1:
+            low_2 = low_1
+            low_1 = n
+
+        elif n <= low_2:
+            low_2 = n
+
+    if high_1 * high_2 * high_3 < low_1 * low_2 * high_1:
+        return low_1 * low_2 * high_1
+
+    return high_1 * high_2 * high_3
+
+
+"""A number is considered perfect if its digits sum up to exactly 10. Given a positive integer n,
+return the n-th perfect number. For example, given 1, you should return 19. Given 2, you should return 28."""
+
+
+def perfect_digit(n):
+    return int(str(n) + str(10-n))
+
+
+"""Using a function rand7() that returns an integer from 1 to 7 (inclusive) with uniform probability,
+implement a function rand5() that returns an integer from 1 to 5 (inclusive)."""
+import random
+
+
+def rand7():
+    return random.randint(1, 7)
+
+
+def rand5():
+    num = rand7()
+    if num > 5:
+        num = rand5()
+
+    return num
+
+
+"""Given the head of a singly linked list, reverse it in-place."""
+
+
+class Node:
+    def __init__(self, data, next_node=None):
+        self.data = data
+        self.next_node = next_node
+
+
+class LinkedList:
+    def __init__(self, data):
+        self.head_node = Node(data)
+
+    def push(self, new_data):
+        new_node = Node(new_data)
+        new_node.next_node = self.head_node
+        self.head_node = new_node
+
+    def printer(self):
+        current_node = self.head_node
+
+        while current_node is not None:
+            print(current_node.data)
+            current_node = current_node.next_node
+
+    def reverse(self):
+        current_node = self.head_node
+        previous_node = None
+
+        while current_node is not None:
+            next_node = current_node.next_node
+            current_node.next_node = previous_node
+            previous_node = current_node
+            current_node = next_node
+            self.head_node = previous_node
+
+
+"""Suppose you have a multiplication table that is N by N. That is, a 2D array where the value at the i-th row and j-th
+column is (i + 1) * (j + 1) (if 0-indexed) or i * j (if 1-indexed). Given integers N and X, write a function that
+returns the number of times X appears as a value in an N by N multiplication table. For example,
+given N = 6 and X = 12, you should return 4, since the multiplication table looks like this:
+| 1 | 2 | 3 | 4 | 5 | 6 |
+| 2 | 4 | 6 | 8 | 10 | 12 |
+| 3 | 6 | 9 | 12 | 15 | 18 |
+| 4 | 8 | 12 | 16 | 20 | 24 |
+| 5 | 10 | 15 | 20 | 25 | 30 |
+| 6 | 12 | 18 | 24 | 30 | 36 |
+And there are 4 12's in the table."""
+
+
+def mul_table(n, x):
+    count = 0
+
+    table = [[0 for _ in range(n)] for _ in range(n)]
+
+    for i, row in enumerate(table):
+        for j, column in enumerate(row):
+            table[i][j] = (j + 1) * (i + 1)
+
+            if table[i][j] == x:
+                count += 1
+
+    return count
+
+
+"""Given a list of possibly overlapping intervals, return a new list of intervals where all overlapping
+intervals have been merged. The input list is not necessarily ordered in any way. For example, given
+[(1, 3), (5, 8), (4, 10), (20, 25)], you should return [(1, 3), (4, 10), (20, 25)]."""
+
+
+def overlapping(array):
+    no_overlap = []
+
+    while len(array) != 0:
+        current_low = None
+        current_high = None
+
+        for interval in array:
+            if current_low is None or interval[0] < current_low:
+                current_low = interval[0]
+                current_high = interval[1]
+
+        check = True
+
+        while check:
+
+            check = False
+
+            for interval in reversed(array):
+                if interval[0] >= current_low and interval[1] <= current_high:
+                    array.remove(interval)
+
+                elif interval[1] >= current_high >= interval[0] >= current_low:
+                    current_high = interval[1]
+                    array.remove(interval)
+                    check = True
+
+        no_overlap.append((current_low, current_high))
+
+    return no_overlap
+
+
+"""You are given an N by M 2D matrix of lowercase letters. Determine the minimum number of columns that can be removed
+to ensure that each row is ordered from top to bottom lexicographically. That is, the letter at each column is
+lexicographically later as you go down each row. It does not matter whether each row itself is ordered lexicographically
+For example, given the following table:
+cba
+daf
+ghi
+This is not ordered because of the a in the center. We can remove the second column to make it ordered:
+ca
+df
+gi
+So your function should return 1, since we only needed to remove 1 column.
+As another example, given the following table:
+abcdef
+Your function should return 0, since the rows are already ordered (there's only one row).
+As another example, given the following table:
+zyx
+wvu
+tsr
+Your function should return 3, since we would need to remove all the columns to order it."""
+
+
+def low_matrix(matrix):
+    if len(matrix) <= 1:
+        return 0
+
+    for i, row in enumerate(matrix):
+        for j, letter in enumerate(row):
+            matrix[i][j] = converter(letter)
+
+    col_to_remove = 0
+
+    print(matrix)
+
+    for i, row in enumerate(matrix):
+        current_val = matrix[0][i]
+        for j, letter in enumerate(row):
+            if current_val > matrix[j][i]:
+                col_to_remove += 1
+
+            elif current_val < matrix[j][i]:
+                current_val = matrix[j][i]
+
+    return col_to_remove
+
+
+def converter(letter):
+    return ord(letter)
+
+
+"""Given k sorted singly linked lists, write a function to merge all the lists into one sorted singly linked list."""
+
+
+class Node:
+    def __init__(self, data, next_node=None):
+        self.data = data
+        self.next_node = next_node
+
+
+class LinkedList:
+    def __init__(self, data):
+        self.head_node = Node(data)
+        self.tail_node = self.head_node
+
+    def push(self, data):
+        new_node = Node(data)
+        self.tail_node.next_node = new_node
+        self.tail_node = new_node
+
+    def add_ll(self, ll):
+        self.tail_node.next_node = ll.head_node
+        self.tail_node = ll.tail_node
+
+    def printer(self):
+        current_node = self.head_node
+
+        while current_node is not None:
+            print(current_node.data)
+            current_node = current_node.next_node
+
+
+"""Given an array of integers, write a function to determine whether the array could become non-decreasing by
+modifying at most 1 element. For example, given the array [10, 5, 7], you should return true, since we can
+modify the 10 into a 1 to make the array non-decreasing. Given the array [10, 5, 1], you should return false,
+since we can't modify any one element to get a non-decreasing array."""
+
+
+def mod_1_element(array):
+    count = 0
+
+    for i in range(len(array) - 1):
+        if array[i] > array[i+1]:
+            count += 1
+
+    return count <= 1
+
+
+"""Given the root of a binary tree, return a deepest node. For example, in the following tree, return d.
+    a
+   / \
+  b   c
+ /
+d"""
+
+
+class TreeNode:
+    def __init__(self, data):
+        self.data = data
+        self.left = None
+        self.right = None
+
+
+class BinaryTree:
+    def __init__(self):
+        self.root = None
+        self.elements = []
+
+    def add(self, data):
+        if self.root is None:
+            self.root = TreeNode(data)
+            self.elements.append(self.root)
+
+        else:
+
+            for node in self.elements:
+                if node.left is None:
+                    node.left = TreeNode(data)
+                    self.elements.append(node.left)
+                    return
+
+                if node.right is None:
+                    node.right = TreeNode(data)
+                    self.elements.append(node.right)
+                    return
+
+    def deepest_node(self):
+        print(self.elements[-1].data)
+
+
+"""Using a read7() method that returns 7 characters from a file, implement readN(n) which reads n characters.
+For example, given a file with the content “Hello world”, three read7() returns “Hello w”, “orld” and then “”."""
+
+
+def read7(string):
+    return string[0:7]
+
+
+def readN(string, n):
+
+    list_to_return = []
+
+    for i in range(n):
+        list_to_return.append(read7(string))
+        string = string[7:]
+
+    return list_to_return
+
+
+"""Invert a binary tree."""
+
+
+class TreeNode:
+    def __init__(self, data):
+        self.data = data
+        self.left = None
+        self.right = None
+
+
+class BinaryTree:
+    def __init__(self):
+        self.root = None
+        self.elements = []
+
+    def add(self, data):
+        if self.root is None:
+            self.root = TreeNode(data)
+            self.elements.append(self.root)
+
+        else:
+            for node in self.elements:
+                if node.left is None:
+                    node.left = TreeNode(data)
+                    self.elements.append(node.left)
+                    return
+
+                if node.right is None:
+                    node.right = TreeNode(data)
+                    self.elements.append(node.right)
+                    return
+
+    def invert(self):
+        for node in self.elements:
+            node.left, node.right = node.right, node.left
+
+"""Given a matrix of 1s and 0s, return the number of "islands" in the matrix. A 1 represents land and 0 represents
+water, so an island is a group of 1s that are neighboring whose perimeter is surrounded by water."""
+
+
+def islands(matrix):
+
+    all_island_tiles = []
+
+    num_of_islands = 0
+
+    for i, row in enumerate(matrix):
+        for j, num in enumerate(row):
+            if num == 1:
+                if [i, j] not in all_island_tiles:
+                    num_of_islands += 1
+                    all_island_tiles.append([i, j])
+                    adjacent_island = adjacent_islands(matrix, i, j, all_island_tiles)
+                    for island in adjacent_island:
+                        if island not in all_island_tiles:
+                            all_island_tiles.append(island)
+
+    return num_of_islands
+
+
+def adjacent_islands(matrix, i, j, all_island_tiles):
+    islands = all_island_tiles
+
+    adjacent_tiles = [[0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1], [-1, 0], [-1, 1]]
+
+    for tile in adjacent_tiles:
+        if 0 <= tile[0] + i < len(matrix) and 0 <= tile[1] + j < len(matrix[0]):
+            if matrix[tile[0] + i][tile[1] + j] == 1:
+                if [tile[0] + i, tile[1] + j] not in islands:
+                    islands.append([tile[0] + i, tile[1] + j])
+                    adjacent_island = adjacent_islands(matrix, tile[0] + i, tile[1] + j, islands)
+                    for island in adjacent_island:
+                        if island not in islands:
+                            islands.append(island)
+
+    return islands
+
+
+"""Given a string of parentheses, write a function to compute the minimum number of parentheses to be removed to make
+the string valid (i.e. each open parenthesis is eventually closed). For example, given the string "()())()",
+you should return 1. Given the string ")(", you should return 2, since we must remove all of them."""
+
+
+def valid_string(string):
+    delete = 0
+
+    count = 0
+
+    start = True
+
+    for char in string:
+        if char == ")" and start:
+            delete += 1
+
+        elif char == "(" and start:
+            count += 1
+            start = False
+
+        elif char == "(":
+            count += 1
+
+        elif char == ")":
+            count -= 1
+            if count == 0:
+                start = True
+
+    delete += count
+
+    return delete
+
+
+def valid_string(s, p):
+    if p == '.*':
+        return True
+    if p == '.':
+        return len(s) == 1
+    if '*' not in p:
+        return s == p
+
+    current_p = ""
+    while len(p) != 0:
+        current_p += p[0]
+        p = p[1:]
+        if current_p[-1] == '*':
+            break
+
+    while len(s) != 0:
+        if current_p[-1] != '*':
+            if s[:len(current_p)-1] != current_p[:-1] and current_p[0] != '.':
+                return False
+            else:
+                if current_p[0] == '.':
+                    return len(s) == 1
+                return s == current_p
+        else:
+
+            if s[:len(current_p)-1] == current_p[:-1]:
+                s = s[len(current_p)-1:]
+            else:
+                if len(p) == 0:
+                    return False
+                else:
+                    current_p = ""
+                    while len(p) != 0:
+                        current_p += p[0]
+                        p = p[1:]
+                        if current_p[-1] == '*':
+                            break
+
+    return True
+
+
+"""Determine whether a tree is a valid binary search tree. A binary search tree is a tree with two children,
+left and right, and satisfies the constraint that the key in the left child must be less than or equal to
+the root and the key in the right child must be greater than or equal to the root."""
+
+
+def valid_binary_tree(node):
+    if node.left is None and node.right is None:
+        return True
+
+    elif node.left is None:
+        if node.right.val >= node.val:
+            return valid_binary_tree(node.right)
+
+    elif node.right is None:
+        if node.left.val <= node.val:
+            return valid_binary_tree(node.left)
+
+    elif node.left.val <= node.val <= node.right.val:
+        return valid_binary_tree(node.left) and valid_binary_tree(node.right)
+
+    return False
+
+
+"""Given an integer n and a list of integers l, write a function that randomly
+generates a number from 0 to n-1 that isn't in l (uniform)."""
+import random
+
+
+def uniform(n, l):
+    num = random.uniform(0, n-1)
+
+    while num in l:
+        num = random.uniform(0, n-1)
+
+    return num
+
+
+"""We're given a hashmap associating each courseId key with a list of courseIds values, which represents that the
+prerequisites of courseId are courseIds. Return a sorted ordering of courses such that we can finish all courses.
+Return null if there is no such ordering. For example, given {'CSC300': ['CSC100', 'CSC200'], 'CSC200': ['CSC100'],
+'CSC100': []}, should return ['CSC100', 'CSC200', 'CSC300']."""
+
+
+def course_map(hashmap):
+    needed_courses = []
+    for course in hashmap:
+        for c in hashmap[course]:
+            if c not in hashmap:
+                return None
+            if c not in needed_courses:
+                needed_courses.append(c)
+        if course not in needed_courses:
+            needed_courses.append(course)
+
+    needed_courses.sort()
+
+    return needed_courses
+
+
+"""Write a map implementation with a get function that lets you retrieve the value of a key at a particular time.
+It should contain the following methods: set(key, value, time): sets key to value for t = time. get(key, time):
+gets the key at t = time. The map should work like this. If we set a key at a particular time, it will maintain
+that value forever or until it gets set at a later time. In other words, when we get a key at a time,
+it should return the value that was set for that key set at the most recent time."""
+
+
+class HashMap:
+    def __init__(self):
+        self.map = {}
+
+    def set(self, key, value, time):
+        if self.map.setdefault(key, [value, time]) != [value, time]:
+            self.map[key] = [value, time]
+
+    def get(self, key, time):
+        if key in self.map:
+            if time == self.map[key][1]:
+                return self.map[key][0]
+
+            return "Incorrect timestamp"
+
+        return "Key not in map"
+
+
+"""The word can be constructed from letters of sequentially adjacent cell, where "adjacent" cells are those horizontally
+or vertically neighboring. The same letter cell may not be used more than once. For example, given the following board:
+[
+  ['A','B','C','E'],
+  ['S','F','C','S'],
+  ['A','D','E','E']
+]
+exists(board, "ABCCED") returns true, exists(board, "SEE") returns true, exists(board, "ABCB") returns false."""
+
+
+def exists(board, word):
+    for x in range(len(board)):
+        for y in range(len(board[0])):
+            if board[x][y] == word[0]:
+                if check(board, word[1:], x, y, [x, y]):
+                    return True
+
+    return False
+
+def check(board, word, x, y, holder):
+    if len(word) == 0:
+        return True
+
+    neighbours = [[0, 1], [1, 0], [0, -1], [-1, 0]]
+    current_neighbours = [[i+x, j+y] for i, j in neighbours]
+
+    for neighbour in current_neighbours:
+        if 0 <= neighbour[0] < len(board) and 0 <= neighbour[1] < len(board[0]):
+            if board[neighbour[0]][neighbour[1]] == word[0] and [neighbour[0], neighbour[1]] not in holder:
+                if check(board, word[1:], neighbour[0], neighbour[1], holder + [[neighbour[0], neighbour[1]]]):
+                    return True
+
+    return False
+
+
+"""You are in an infinite 2D grid where you can move in any of the 8 directions:
+ (x,y) to
+    (x+1, y),
+    (x - 1, y),
+    (x, y+1),
+    (x, y-1),
+    (x-1, y-1),
+    (x+1,y+1),
+    (x-1,y+1),
+    (x+1,y-1)
+You are given a sequence of points and the order in which you need to cover the points.
+Give the minimum number of steps in which you can achieve it. You start from the first point.
+Example:
+Input: [(0, 0), (1, 1), (1, 2)]
+Output: 2
+It takes 1 step to move from (0, 0) to (1, 1). It takes one more step to move from (1, 1) to (1, 2)."""
+
+
+def min_steps(array):
+    steps = 0
+    for i in range(len(array)-1):
+        x_diff = abs(array[i][0] - array[i+1][0])
+        y_diff = abs(array[i][1] - array[i+1][1])
+        steps += max(x_diff, y_diff)
+
+    return steps
+
+print(min_steps([(0, 0), (1, 1), (1, 2)]))
+
+
+"""Given an even number (greater than 2), return two prime numbers whose sum will be equal to the given number.
+A solution will always exist. See Goldbach’s conjecture.
+Example:
+Input: 4
+Output: 2 + 2 = 4
+If there are more than one solution possible, return the lexicographically smaller solution.
+If [a, b] is one solution with a <= b, and [c, d] is another solution with c <= d, then
+[a, b] < [c, d]
+If a < c OR a==c AND b < d."""
+
+
+def goldbach_conjecture(n):
+    if n <= 3 or n % 2 == 1:
+        return False
+
+    for i in range(2, n):
+        if is_prime(i):
+            if is_prime(n-i):
+                return [i, n-i]
+
+def is_prime(n):
+    prime = True
+    for i in range(2, n):
+        if n % i == 0 and i != n:
+            prime = False
+
+    return prime
+
+
+"""Given a list of integers and a number K, return which contiguous elements of the list sum to K.
+For example, if the list is [1, 2, 3, 4, 5] and K is 9, then it should return [2, 3, 4], since 2 + 3 + 4 = 9."""
+
+
+def sum_to_k(lst, k):
+
+    check_lst = []
+    sum = 0
+
+    for num in lst:
+        check_lst.append(num)
+        sum += num
+
+        while sum > k:
+            sum -= check_lst[0]
+            check_lst.remove(check_lst[0])
+
+        if sum == k:
+            return check_lst
+
+    return print("No contiguous elements of the list sum to K.")
+
+
+"""Given an integer list where each number represents the number of jumps you can make, determine whether you can reach
+to the last index starting at index 0. For example, [2, 0, 1, 0] returns True while [1, 1, 0, 1] returns False."""
+
+
+def can_jump_to_last(array):
+    print(array)
+
+    if len(array) == 0:
+        return True
+
+    if array[0] >= len(array) - 1:
+        return True
+
+    for i in range(array[0]-1, 0, -1):
+        if can_jump_to_last(array[i+1:]):
+            return True
+
+    return False
+
+
+"""Print the nodes in a binary tree level-wise. For example, the following should print 1, 2, 3, 4, 5.
+  1
+ / \
+2   3
+   / \
+  4   5"""
+
+
+class TreeNode:
+    def __init__(self, data):
+        self.data = data
+        self.left = None
+        self.right = None
+
+
+class BinaryTree:
+    def __init__(self):
+        self.root = None
+        self.nodes = []
+
+    def add(self, data):
+        new_node = TreeNode(data)
+
+        if self.root is None:
+            self.root = new_node
+
+        else:
+            for node in self.nodes:
+                if node.left is None:
+                    node.left = new_node
+                    break
+                elif node.right is None:
+                    node.right = new_node
+                    break
+
+        self.nodes.append(new_node)
+
+    def print_tree(self):
+        for node in self.nodes:
+            print(node.data)
+
+
+"""Given two strings A and B, return whether or not A can be shifted some number of times to get B.
+For example, if A is abcde and B is cdeab, return true. If A is abc and B is acb, return false."""
+
+
+def a_shifted_b(a, b):
+    if len(a) == len(b):
+        for i, letter in enumerate(a):
+            if letter == b[0]:
+                if a[i:] + a[:i] == b:
+                    return True
+    return False
+
+
+"""Given an unsigned 8-bit integer, swap its even and odd bits. The 1st and 2nd bit should be swapped,
+the 3rd and 4th bit should be swapped, and so on. For example, 10101010 should be 01010101.
+11100010 should be 11010001. Bonus: Can you do this in one line?"""
+
+
+def bit_swap(bit_num):
+    return int(''.join([str(1) if i == '0' else str(0) for i in str(bit_num)]))
+
+
+"""Given a word W and a string S, find all starting indices in S which are anagrams of W.
+For example, given that W is "ab", and S is "abxaba", return 0, 3, and 4."""
+
+
+def all_anagrams(w, s):
+    if len(w) > len(s):
+        return None
+
+    check = False
+
+    for i in range(len(s) - (len(w) - 1)):
+        if check:
+            if s[i-1] == s[i+len(w)-1]:
+                print(i)
+            else:
+                check = False
+
+        else:
+            if is_anagram(w, s[i:i+len(w)]):
+                print(i)
+                check = True
+
+
+def is_anagram(s1, s2):
+    return set(s1) - set(s2) == set()
+
+
+"""Given a string of words delimited by spaces, reverse the words in string. For example, given "hello world here",
+return "here world hello" Follow-up: given a mutable string representation, can you perform this operation in-place?"""
+
+
+def swap_words(s):
+    return ' '.join(reversed([i for i in s.split()]))
+
+
+"""Given two non-empty binary trees s and t, check whether tree t has exactly the same structure and node
+values with a subtree of s. A subtree of s is a tree consists of a node in s and all of this node's descendants.
+The tree s could also be considered as a subtree of itself."""
+
+
+def check_s_and_t(s, t):
+    trees_to_check = []
+
+    nodes_to_check = [t]
+
+    while len(nodes_to_check) != 0:
+        for node in nodes_to_check:
+            if node.left:
+                nodes_to_check.append(node.left)
+            if node.right:
+                nodes_to_check.append(node.right)
+
+            if node.value == s.value:
+                trees_to_check.append(node)
+
+            nodes_to_check.remove(node)
+
+    if len(trees_to_check) == 0:
+        return False
+
+    for tree in trees_to_check:
+        if same_tree(s, tree):
+            return True
+
+    return False
+
+
+def same_tree(tree1, tree2):
+    if not tree1 and not tree2:
+        return True
+
+    if (tree1 and not tree2) or (not tree1 and tree2):
+        return False
+
+    return tree1.value == tree2.value and same_tree(tree1.left, tree2.left) and same_tree(tree1.right, tree2.right)
+
+
