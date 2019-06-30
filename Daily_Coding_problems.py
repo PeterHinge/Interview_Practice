@@ -2530,3 +2530,14 @@ def low_sum_of_level(root):
         queue = temp
 
     return low_sum[0]
+
+
+"""Given a sorted list of integers, square the elements and give the output in sorted order.
+For example, given [-9, -2, 0, 2, 3], return [0, 4, 4, 9, 81]."""
+
+
+def sorted_squares(lst):
+    squares = [i*i for i in lst]
+    squares.sort()
+    return squares
+
