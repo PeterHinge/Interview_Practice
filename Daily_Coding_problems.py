@@ -2490,3 +2490,43 @@ def same_tree(tree1, tree2):
     return tree1.value == tree2.value and same_tree(tree1.left, tree2.left) and same_tree(tree1.right, tree2.right)
 
 
+"""Given a binary tree, return the level of the tree with minimum sum."""
+
+
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+
+
+def low_sum_of_level(root):
+    queue = [root]
+
+    level = 0
+
+    low_sum = 0, root.val
+
+    while len(queue) > 0:
+
+        current_sum = 0
+
+        temp = []
+
+        for i, node in enumerate(queue):
+            current_sum += node.val
+            if node.left:
+                temp.append(node.left)
+            if node.right:
+                temp.append(node.right)
+
+            queue.remove(node)
+
+        if current_sum < low_sum[1]:
+            low_sum = level, current_sum
+
+        level += 1
+
+        queue = temp
+
+    return low_sum[0]
