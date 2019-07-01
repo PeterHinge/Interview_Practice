@@ -2541,3 +2541,24 @@ def sorted_squares(lst):
     squares.sort()
     return squares
 
+
+"""Given a set of closed intervals, find the smallest set of numbers that covers all the intervals.
+If there are multiple smallest sets, return any of them. For example, given the intervals
+[0, 3], [2, 6], [3, 4], [6, 9], one set of numbers that covers all these intervals is {3, 6}."""
+
+
+def small_covers(s):
+
+    high = None
+    low = None
+
+    for interval in s:
+        if not high or interval[0] > high:
+            high = interval[0]
+
+        if not low  or interval[1] < low:
+            low = interval[1]
+
+    if low >= high:
+        return {high}
+    return {low, high}
