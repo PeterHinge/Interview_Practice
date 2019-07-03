@@ -2562,3 +2562,27 @@ def small_covers(s):
     if low >= high:
         return {high}
     return {low, high}
+
+
+"""Given a string which we can delete at most k, return whether you can make a palindrome.
+For example, given 'waterrfetawx' and a k of 2, you could delete f and x to get 'waterretaw'."""
+
+
+def can_make_palindrome(s, k):
+    length = len(s)
+    reverse_s = s[::-1]
+
+    return is_palindrome(s, reverse_s, length, length) <= k * 2
+
+
+def is_palindrome(str_1, str_2, m, n):
+    if m == 0:
+        return n
+    if n == 0:
+        return m
+
+    if str_1[m-1] == str_2[n-1]:
+        return is_palindrome(str_1, str_2, m-1, n-1)
+
+    return 1 + min(is_palindrome(str_1, str_2, m-1, n), is_palindrome(str_1, str_2, m, n-1))
+
