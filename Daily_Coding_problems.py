@@ -2609,3 +2609,31 @@ def most_coins(matrix, m=0, n=0):
     return matrix[m][n] + max(most_coins(matrix, m, n+1), most_coins(matrix, m+1, n))
 
 
+"""
+Given a string, return whether it represents a number. Here are the different kinds of numbers:
+"10", a positive integer
+"-10", a negative integer
+"10.1", a positive real number
+"-10.1", a negative real number
+"1e5", a number in scientific notation
+And here are examples of non-numbers:
+"a"
+"x 1"
+"a -2"
+"-"
+"""
+
+
+def repr_num(s):
+    try:
+        float(s)
+        return True
+    except:
+        pass
+
+    for i, c in enumerate(s):
+        if c == 'e':
+            return repr_num(s[0:i]) and repr_num(s[i+1:])
+
+    return False
+
