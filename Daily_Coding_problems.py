@@ -2637,3 +2637,25 @@ def repr_num(s):
 
     return False
 
+
+"""You have n fair coins and you flip them all at the same time. Any that come up tails you set aside.
+The ones that come up heads you flip again. How many rounds do you expect to play before only one coin remains?
+Write a function that, given n, returns the number of rounds you'd expect to play until one coin remains."""
+import random
+
+
+def one_left(n, uneven=random.choice([True, False])):
+    if n == 1:
+        return 0
+
+    if n % 2 == 1:
+        if uneven:
+            uneven = False
+        else:
+            uneven = True
+
+        if uneven:
+            return 1 + one_left(n//2+1, uneven)
+
+    return 1 + one_left(n//2, uneven)
+
