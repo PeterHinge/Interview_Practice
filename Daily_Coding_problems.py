@@ -2659,3 +2659,41 @@ def one_left(n, uneven=random.choice([True, False])):
 
     return 1 + one_left(n//2, uneven)
 
+
+"""Given the root of a binary search tree, and a target K, return two nodes in the tree whose sum equals K.
+For example, given the following tree and K of 20
+    10
+   /   \
+ 5      15
+       /  \
+     11    15
+Return the nodes 5 and 15."""
+
+
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+
+
+def find_target(root, k):
+    holder = {}
+    nodes_to_check = [root]
+
+    while len(nodes_to_check) != 0:
+        current = nodes_to_check[0]
+        nodes_to_check.remove(current)
+
+        if k - current.val in holder:
+            return current, holder[k - current.val]
+
+        holder.setdefault(current.val, current)
+
+        if current.left:
+            nodes_to_check.append(current.left)
+
+        if current.right:
+            nodes_to_check.append(current.right)
+
+    return None
