@@ -2707,3 +2707,59 @@ How many swap or move operations do you need?"""
 def swap(lst, k):
     return lst[k:] + lst[:k]
 
+
+"""Let's represent an integer in a linked list format by having each node represent a digit in the number. The nodes make up the number in reversed order.
+For example, the following linked list:
+1 -> 2 -> 3 -> 4 -> 5
+is the number 54321.
+Given two linked lists in this format, return their sum in the same linked list format.
+For example, given
+9 -> 9
+5 -> 2
+return 124 (99 + 25) as:
+4 -> 2 -> 1"""
+
+
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.next = None
+
+
+def sum_ll(ll_1, ll_2):
+    current_1 = ll_1
+    current_2 = ll_2
+    sum_root = TreeNode(0)
+    current_sum = sum_root
+
+    ten = False
+
+    while current_1 or current_2:
+
+        if current_1:
+            current_sum.val += current_1.val
+
+        if current_2:
+            current_sum.val += current_2.val
+
+        if ten:
+            current_sum.val += 1
+            ten = False
+
+        if current_sum.val >= 10:
+            current_sum.val -= 10
+            ten = True
+
+        current_1 = current_1.next
+        current_2 = current_2.next
+
+        if current_1 or current_2:
+            new_node = TreeNode(0)
+            current_sum.next = new_node
+            current_sum = new_node
+
+    if ten:
+        new_node = TreeNode(1)
+        current_sum.next = new_node
+
+    return sum_root
