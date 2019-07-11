@@ -2763,3 +2763,12 @@ def sum_ll(ll_1, ll_2):
         current_sum.next = new_node
 
     return sum_root
+
+
+"""Given a real number n, find the square root of n. For example, given n = 9, return 3."""
+
+
+def squr(n):
+    return n ** (1/2)
+
+
