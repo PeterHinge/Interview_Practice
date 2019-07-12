@@ -2772,3 +2772,41 @@ def squr(n):
     return n ** (1/2)
 
 
+"""Given an array of numbers representing the stock prices of a company in chronological order and an integer k,
+return the maximum profit you can make from k buys and sells. You must buy the stock before you can sell it,
+and you must sell the stock before you can buy it again. For example,
+given k = 2 and the array [5, 2, 4, 0, 1], you should return 3."""
+
+
+def largest_profit(prices, k):
+    map = []
+    index = []
+
+    low = [0, prices[0]]
+    current = [0, prices[0]]
+
+    for i, price in enumerate(prices):
+
+        if price < current[1]:
+
+            if i != low[0] + 1:
+                index.append([low[0], current[0]])
+                map.append([low[1], current[1]])
+            low = [i, price]
+
+        current = [i, price]
+
+    if current[0] != low[0] and current[1] > low[1]:
+        index.append([low[0], current[0]])
+        map.append([low[1], current[1]])
+
+    if low == [0, prices[0]]:
+        return 0
+
+    profit = 0
+
+    if len(map) <= k:
+        for pair in map:
+            profit += pair[1] - pair[0]
+
+    return profit
