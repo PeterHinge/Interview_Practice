@@ -2810,3 +2810,37 @@ def largest_profit(prices, k):
             profit += pair[1] - pair[0]
 
     return profit
+
+
+"""Given the head to a singly linked list, where each node also has a “random” pointer that points to anywhere
+in the linked list, deep clone the list."""
+
+
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.next = None
+        self.pointer = None
+
+
+def deep_clone(head):
+    list1 = []
+    list2 = []
+
+    current = head
+
+    while current:
+        new_node = TreeNode(current.val)
+
+        list1.append(current)
+        list2.append(new_node)
+
+        current = current.next
+
+    for i, element in enumerate(list2):
+        if i != len(list2) - 1:
+            element.next = list2[i+1]
+
+        element.pointer = list2[list1.index(list1[i].pointer)]
+
+    return list2[0]
