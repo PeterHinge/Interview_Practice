@@ -2844,3 +2844,29 @@ def deep_clone(head):
         element.pointer = list2[list1.index(list1[i].pointer)]
 
     return list2[0]
+
+
+"""Design and implement a HitCounter class that keeps track of requests (or hits).
+It should support the following operations: record(timestamp): records a hit that happened at timestamp.
+total(): returns the total number of hits recorded. range(lower, upper): returns the number of hits that
+occurred between timestamps lower and upper (inclusive). Follow-up: What if our system has limited memory?"""
+
+
+class HitCounter:
+    def __init__(self):
+        self.timestamps = []
+
+    def record(self, timestamp):
+        self.timestamps.append(timestamp)
+
+    def total(self):
+        return len(self.timestamps)
+
+    def range(self, lower, upper):
+        hits = 0
+        for stamp in self.timestamps:
+            if lower <= stamp <= upper:
+                hits += 1
+        return hits
+
+# Answer to follow-up: Implement self.maxsize
