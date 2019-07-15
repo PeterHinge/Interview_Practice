@@ -2870,3 +2870,30 @@ class HitCounter:
         return hits
 
 # Answer to follow-up: Implement self.maxsize
+
+
+"""Given a node in a binary search tree, return the next bigger element, also known as the inorder successor.
+For example, the inorder successor of 22 is 30.
+   10
+  /  \
+ 5    30
+     /  \
+   22    35
+You can assume each node has a parent pointer."""
+
+
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+        self.parent = None
+        
+
+def inorder_successor(node):
+    current = node.parent
+    while current:
+        if current.val > node.val:
+            return current.val
+        current = current.parent    
+    return None
