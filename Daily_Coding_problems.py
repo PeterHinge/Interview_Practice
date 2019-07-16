@@ -2897,3 +2897,51 @@ def inorder_successor(node):
             return current.val
         current = current.parent    
     return None
+
+"""You have a large array with most of the elements as zero. Use a more space-efficient data structure, SparseArray,
+that implements the same interface: init(arr, size): initialize with the original large array and size.
+set(i, val): updates index at i with val. get(i): gets the value at index i."""
+
+
+class Node:
+    def __init__(self, val):
+        self.val = val
+        self.next = None
+
+
+class SparseArray:
+    def __init__(self, arr, size):
+        self.size = size
+        self.head = None
+        if self.size > 1:
+            self.head = Node(arr[0])
+            current = self.head
+            for i in range(1, self.size):
+                new = Node(arr[i])
+                current.next = new
+                current = current.next
+
+    def set(self, i, val):
+        current = self.head
+        index = 0
+        while current:
+            if index == i - 1:
+                end = current.next
+                new = Node(val)
+                current.next = new
+                new.next = end
+                self.size += 1
+                return
+            index += 1
+            current = current.next
+        print("List doesn't have that index!")
+
+    def get(self, i):
+        current = self.head
+        index = 0
+        while current:
+            if index == i:
+                return current.val
+            index += 1
+            current = current.next
+        print("List doesn't have that index!")
