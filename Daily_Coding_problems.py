@@ -2945,3 +2945,35 @@ class SparseArray:
             index += 1
             current = current.next
         print("List doesn't have that index!")
+
+        
+     
+   """Given a binary tree, find a minimum path sum from root to a leaf.
+For example, the minimum path in this tree is [10, 5, 1, -1], which has sum 15.
+  10
+ /  \
+5    5
+ \     \
+   2    1
+       /
+     -1"""
+
+
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+
+
+def min_path(node):
+    if not node:
+        return 0
+    if not node.left and not node.right:
+        return node.val
+    if not node.left:
+        return node.val + min_path(node.right)
+    if not node.right:
+        return node.val + min_path(node.left)
+    else:
+        return node.val + min(min_path(node.left), min_path(node.right))
