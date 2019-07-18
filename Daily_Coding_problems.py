@@ -2977,3 +2977,25 @@ def min_path(node):
         return node.val + min_path(node.left)
     else:
         return node.val + min(min_path(node.left), min_path(node.right))
+
+    
+  """Given an N by M matrix consisting only of 1's and 0's, find the largest rectangle containing only 1's and
+return its area. For example, given the following matrix:
+[[1, 0, 0, 0],
+ [1, 0, 1, 1],
+ [1, 0, 1, 1],
+ [0, 1, 0, 0]]
+Return 4."""
+
+
+def largest_rectangle(matrix):
+    large_rect = []
+
+    for i, row in enumerate(matrix):
+        for j, num in enumerate(row):
+            if num == 1 and [i, j] not in large_rect:
+                current_rect = make_rect(matrix, i, j)
+                if len(current_rect) > len(large_rect):
+                    large_rect = current_rect
+
+    return len(large_rect)
