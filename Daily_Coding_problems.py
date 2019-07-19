@@ -2979,23 +2979,19 @@ def min_path(node):
         return node.val + min(min_path(node.left), min_path(node.right))
 
     
-  """Given an N by M matrix consisting only of 1's and 0's, find the largest rectangle containing only 1's and
-return its area. For example, given the following matrix:
-[[1, 0, 0, 0],
- [1, 0, 1, 1],
- [1, 0, 1, 1],
- [0, 1, 0, 0]]
-Return 4."""
+"""Implement a bit array. A bit array is a space efficient array that holds a value of 1 or 0 at each index.
+init(size): initialize the array with size. set(i, val): updates index at i with val where val is either 1 or 0.
+get(i): gets the value at index i."""
 
 
-def largest_rectangle(matrix):
-    large_rect = []
+class BitArray:
+    def __init__(self, size):
+        self.array = [0 for _ in range(size)]
 
-    for i, row in enumerate(matrix):
-        for j, num in enumerate(row):
-            if num == 1 and [i, j] not in large_rect:
-                current_rect = make_rect(matrix, i, j)
-                if len(current_rect) > len(large_rect):
-                    large_rect = current_rect
+    def set(self, i, val):
+        assert type(i) == int and i < len(self.array)
+        assert val == 0 or val == 1
+        self.array[i] = val
 
-    return len(large_rect)
+    def get(self, i):
+        return self.array[i]
