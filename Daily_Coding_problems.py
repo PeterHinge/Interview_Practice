@@ -3036,3 +3036,27 @@ def two_elements(array):
             index += 1
         else:
             index += 2
+
+   
+"""Implement 3 stacks using a single list:
+
+class Stack:
+    def __init__(self):
+        self.list = []
+
+    def pop(self, stack_number):
+        pass
+
+    def push(self, item, stack_number):
+        pass"""
+
+
+class Stack:
+    def __init__(self):
+        self.list = [[], [], []]
+
+    def pop(self, stack_number):
+        return self.list[stack_number].pop()
+
+    def push(self, item, stack_number):
+        self.list[stack_number].append(item)
