@@ -3122,3 +3122,55 @@ class PreProcess:
 
     def get_near_large_num(self, index):
         return self.map[index]
+
+    
+    """Given the head of a singly linked list, swap every two nodes and return its head.
+For example, given 1 -> 2 -> 3 -> 4, return 2 -> 1 -> 4 -> 3."""
+
+
+class Node:
+    def __init__(self, val):
+        self.val = val
+        self.next = None
+
+
+class LinkedList:
+    def __init__(self):
+        self.head = None
+        self.tail = None
+
+    def add(self, val):
+        new_node = Node(val)
+
+        if not self.head:
+            self.head = new_node
+            self.tail = new_node
+
+        else:
+            self.tail.next = new_node
+            self.tail = new_node
+
+    def print(self):
+        current = self.head
+        while current:
+            print(current.val)
+            current = current.next
+
+    def swap_two(self):
+        prev = self.head
+        current = self.head
+        next = self.head.next
+
+        while current and next:
+            current.next = next.next
+            next.next = current
+
+            if prev == self.head:
+                self.head = next
+            else:
+                prev.next = next
+
+            prev = current
+            current = current.next
+            if current:
+                next = current.next
