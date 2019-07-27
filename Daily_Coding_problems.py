@@ -3086,3 +3086,39 @@ def pivot(lst, x):
         partition.insert(small_end_index, x)
 
     return partition
+
+
+"""Given an array of numbers and an index i, return the index of the nearest larger number of the number at index i,
+where distance is measured in array indices. For example, given [4, 1, 3, 5, 6] and index 0, you should return 3.
+If two distances to larger numbers are the equal, then return any one of them. If the array at i doesn't have a nearest
+larger integer, then return null. Follow-up: If you can preprocess the array, can you do this in constant time?"""
+
+
+def nearest_large_num(array, index):
+    right_index = index + 1
+    left_index = index - 1
+
+    while right_index <= len(array) - 1 or left_index >= 0:
+        if right_index <= len(array) - 1:
+            if array[right_index] > array[index]:
+                return right_index
+        if left_index >= 0:
+            if array[left_index] > array[index]:
+                return left_index
+
+        right_index += 1
+        left_index -= 1
+
+    return None
+
+
+class PreProcess:
+    def __init__(self, array):
+        self.array = array
+        self.map = {}
+
+        for i in range(len(self.array)):
+            self.map[i] = nearest_large_num(self.array, i)
+
+    def get_near_large_num(self, index):
+        return self.map[index]
