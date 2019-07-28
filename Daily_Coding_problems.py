@@ -3174,3 +3174,57 @@ class LinkedList:
             current = current.next
             if current:
                 next = current.next
+
+                
+                """Given a binary tree where all nodes are either 0 or 1, prune the tree so that subtrees containing all 0s are removed.
+For example, given the following tree:
+   0
+  / \
+ 1   0
+    / \
+   1   0
+  / \
+ 0   0
+should be pruned to:
+   0
+  / \
+ 1   0
+    /
+   1
+We do not remove the tree at the root or its left child because it still has a 1 as a descendant."""
+
+
+class Node:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+
+
+def cut_tree(root):
+    queue = [root]
+    while len(queue) != 0:
+        current = queue[0]
+        if current.left:
+            if remove(current.left):
+                current.left = None
+            else:
+                queue.append(current.left)
+        if current.right:
+            if remove(current.right):
+                current.right = None
+            else:
+                queue.append(current.right)
+        queue.remove(current)
+    return root
+
+
+def remove(node):
+    if not node.left and not node.right:
+        return node.val == 0
+    if node.left and node.right:
+        return remove(node.left) and remove(node.right) and node.val == 0
+    if node.left:
+        remove(node.left) and node.val == 0
+    if node.right:
+        return remove(node.right) and node.val == 0
