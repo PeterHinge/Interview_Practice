@@ -3228,3 +3228,21 @@ def remove(node):
         remove(node.left) and node.val == 0
     if node.right:
         return remove(node.right) and node.val == 0
+
+    
+"""Given a list, sort it using this method: reverse(lst, i, j), which reverses lst from i to j."""
+
+
+def reverse(lst, i, j):
+    left = lst[:i]
+    right = lst[j+1:]
+
+    return left + swap(lst[i:j+1]) + right
+
+
+def swap(lst):
+    swapped_lst = []
+    for c in reversed(lst):
+        swapped_lst.append(c)
+
+    return swapped_lst
