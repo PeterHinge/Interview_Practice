@@ -3246,3 +3246,23 @@ def swap(lst):
         swapped_lst.append(c)
 
     return swapped_lst
+
+
+"""Given a list of numbers L, implement a method sum(i, j) which returns the sum from the sublist L[i:j]
+(including i, excluding j). For example, given L = [1, 2, 3, 4, 5], sum(1, 3) should return sum([2, 3]), which is 5.
+You can assume that you can do some pre-processing. sum() should be optimized over the pre-processing step."""
+
+
+class L:
+    def __init__(self, lst):
+        self.map = {}
+
+        index = 1
+
+        while index < len(lst) - 1:
+            for i in range(0, len(lst) - (index-1)):
+                self.map[str(i) + " " + str(i + index)] = sum(lst[i: i + index])
+            index += 1
+
+    def sum(self, low_i, high_i):
+        return self.map[str(low_i) + " " + str(high_i)]
