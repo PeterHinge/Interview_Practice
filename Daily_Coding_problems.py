@@ -3266,3 +3266,33 @@ class L:
 
     def sum(self, low_i, high_i):
         return self.map[str(low_i) + " " + str(high_i)]
+    
+
+"""Given a list of points, a central point, and an integer k, find the nearest k points from the central point.
+For example, given the list of points [(0, 0), (5, 4), (3, 1)], the central point (1, 2), and k = 2,
+return [(0, 0), (3, 1)]."""
+
+
+def k_nearest_points(lst, center, k):
+    points = []
+    distances = []
+
+    for point in lst:
+        distance = abs(point[0] - center[0]) + abs(point[1] - center[1])
+        if not distances:
+            distances.append(distance)
+            points.append(point)
+        else:
+            index = 0
+            while index < len(distances) and distances[index] < distance:
+                index += 1
+
+            if index == len(distances):
+                distances.append(distance)
+                points.append(point)
+            else:
+                distances.insert(index, distance)
+                points.insert(index, point)
+
+    return points[:k]
+
