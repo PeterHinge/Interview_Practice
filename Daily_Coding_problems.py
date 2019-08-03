@@ -3296,3 +3296,39 @@ def k_nearest_points(lst, center, k):
 
     return points[:k]
 
+
+"""Given a 2-D matrix representing an image, a location of a pixel in the screen and a color C,
+replace the color of the given pixel and all adjacent same colored pixels with C.
+For example, given the following matrix, and location pixel of (2, 2), and 'G' for green:
+B B W
+W W W
+W W W
+B B B
+Becomes
+B B G
+G G G
+G G G
+B B B
+"""
+
+
+def fill_change(matrix, pixel, color):
+    old_color = matrix[pixel[1]][pixel[0]]
+    queue = [list(pixel)]
+
+    while len(queue) > 0:
+        current = queue[0]
+        matrix[current[1]][current[0]] = color
+        adjacent = get_adjacent(current[0], current[1])
+        for pixel in adjacent:
+            if 0 <= pixel[0] < len(matrix[0]) and 0 <= pixel[1] < len(matrix):
+                if matrix[pixel[1]][pixel[0]] == old_color and pixel not in queue:
+                    queue.append(pixel)
+        queue.remove(queue[0])
+
+    return matrix
+
+
+def get_adjacent(x, y):
+    adjacent = [[0, 1], [1, 0], [0, -1], [-1, 0]]
+    return [[x + i[0], y + i[1]] for i in adjacent]
