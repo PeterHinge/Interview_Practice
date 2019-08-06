@@ -3381,3 +3381,19 @@ def smallest_distance(text, w1, w2):
         index += 1
 
     return smallest
+
+
+"""Given a list of elements, find the majority element, which appears more than half the time (> floor(len(lst) / 2.0)).
+You can assume that such element exists. For example, given [1, 2, 1, 1, 3, 4, 1], return 1."""
+
+
+def majority_element(array):
+    map = {}
+
+    for element in array:
+        map.setdefault(element, 0)
+        map[element] += 1
+
+    for element in map:
+        if map[element] > len(array) // 2:
+            return element
