@@ -3397,3 +3397,38 @@ def majority_element(array):
     for element in map:
         if map[element] > len(array) // 2:
             return element
+
+        
+"""Given a positive integer n, find the smallest number of squared integers which sum to n. For example,
+given n = 13, return 2 since 13 = 3^2 + 2^2 = 9 + 4. Given n = 27, return 3 since 27 = 3^2 + 3^2 + 3^2 = 9 + 9 + 9."""
+
+
+def small_square(num):
+    high_base = 1
+
+    while True:
+        if high_base ** 2 > num:
+            break
+        high_base += 1
+
+    small_num = None
+    current_num = 0
+    sum = 0
+
+    for i in range(high_base, 0, -1):
+
+        current_base = i
+
+        while sum != num:
+            if current_base**2 + sum > num:
+                current_base -= 1
+            else:
+                sum += current_base**2
+                current_num += 1
+                if small_num and current_num > small_num:
+                    break
+
+        if not small_num or current_num < small_num:
+            small_num = current_num
+
+    return small_num
