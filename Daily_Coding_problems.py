@@ -3432,3 +3432,26 @@ def small_square(num):
             small_num = current_num
 
     return small_num
+
+
+"""Given a string, determine whether any permutation of it is a palindrome. For example,
+carrace should return true, since it can be rearranged to form racecar, which is a palindrome.
+daily should return false, since there's no rearrangement that can form a palindrome."""
+
+
+def is_palindrome_permutation(string):
+    map = {}
+
+    for c in string:
+        map.setdefault(c, 0)
+        map[c] += 1
+
+    odd = False
+
+    for c in map:
+        if map[c] % 2 == 1:
+            if odd:
+                return False
+            odd = True
+
+    return True
