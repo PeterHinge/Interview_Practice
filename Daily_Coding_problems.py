@@ -3470,3 +3470,22 @@ def first_recurring_chr(string):
         map[c] = 0
 
     return None
+
+
+"""Given a 32-bit integer, return the number with its bits reversed. For example, given the binary number
+1111 0000 1111 0000 1111 0000 1111 0000, return 0000 1111 0000 1111 0000 1111 0000 1111."""
+
+
+# assume they're given as a list of strings
+def binary_reversed(bitcode):
+    reversed_bitcode = []
+    for four_bit in bitcode:
+        four_reversed = ""
+        for c in four_bit:
+            if c == "0":
+                four_reversed += '1'
+            else:
+                four_reversed += '0'
+        reversed_bitcode.append(four_reversed)
+
+    return reversed_bitcode
