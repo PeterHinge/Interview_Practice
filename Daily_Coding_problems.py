@@ -3489,3 +3489,32 @@ def binary_reversed(bitcode):
         reversed_bitcode.append(four_reversed)
 
     return reversed_bitcode
+
+
+"""You are given a list of data entries that represent entries and exits of groups of people into a building.
+An entry looks like this: {"timestamp": 1526579928, count: 3, "type": "enter"} This means 3 people entered the building.
+An exit looks like this: {"timestamp": 1526580382, count: 2, "type": "exit"} This means that 2 people exited the
+building. timestamp is in Unix time. Find the busiest period in the building, that is, the time with the most people
+in the building. Return it as a pair of (start, end) timestamps. You can assume the building always starts off and
+ends up empty, i.e. with 0 people inside."""
+
+
+def most_in_building(entries):
+    current = entries[0]['count']
+    start = entries[0]['timestamp']
+
+    high = entries[0]['count']
+    time = start, start
+
+    for i in range(1, len(entries)):
+        if current == 0:
+            start = entries[i]['timestamp']
+        if entries[i]['type'] == 'enter':
+            current += entries[i]['count']
+        else:
+            current -= entries[i]['count']
+        if current > high:
+            high = current
+            time = start, entries[i]['timestamp']
+
+    return time
