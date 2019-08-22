@@ -3518,3 +3518,50 @@ def most_in_building(entries):
             time = start, entries[i]['timestamp']
 
     return time
+
+
+"""Implement a 2D iterator class. It will be initialized with an array of arrays, and should implement the following
+methods: next(): returns the next element in the array of arrays. If there are no more elements, raise an exception.
+has_next(): returns whether or not the iterator still has elements left. For example, given the input
+[[1, 2], [3], [], [4, 5, 6]], calling next() repeatedly should output 1, 2, 3, 4, 5, 6.
+Do not use flatten or otherwise clone the arrays. Some of the arrays can be empty."""
+
+
+class Iterator2D:
+    def __init__(self, array2d):
+        self.array2d = array2d
+        self.current_index = None
+
+    def next(self):
+        if not self.has_next():
+            raise Exception
+        else:
+            if not self.current_index:
+                for i, array in enumerate(self.array2d):
+                    if len(array) > 0:
+                        self.current_index = i, 0
+                        break
+            else:
+                if len(self.array2d[self.current_index[0]]) - 1 <= self.current_index[1]:
+                    for i in range(self.current_index[0] + 1, len(self.array2d)):
+                        if len(self.array2d[i]) > 0:
+                            self.current_index = i, 0
+                            break
+                else:
+                    self.current_index = self.current_index[0], self.current_index[1] + 1
+            return self.array2d[self.current_index[0]][self.current_index[1]]
+
+    def has_next(self):
+        if not self.current_index:
+            for i, array in enumerate(self.array2d):
+                if len(array) > 0:
+                    return True
+            return False
+        else:
+            if len(self.array2d[self.current_index[0]]) - 1 <= self.current_index[1]:
+                for i in range(self.current_index[0]+1, len(self.array2d)):
+                    if len(self.array2d[i]) == 0:
+                        return True
+                return False
+            else:
+                return True
