@@ -3590,3 +3590,30 @@ def rotation90clockwise(array2d):
             rotation[low+y][length-x] = array2d[x][y]
 
     return rotation
+
+
+"""Given a list of words, find all pairs of unique indices such that the concatenation of the two words is a palindrome.
+For example, given the list ["code", "edoc", "da", "d"], return [(0, 1), (1, 0), (2, 3)]."""
+
+
+class Solution:
+    def unique_indices(self, lst):
+        unique = []
+
+        for x in range(len(lst) - 1):
+            for y in range(x+1, len(lst)):
+                word1 = lst[x] + lst[y]
+                word2 = lst[y] + lst[x]
+                if self.is_palindrome(word1):
+                    unique.append((x, y))
+                if self.is_palindrome(word2):
+                    unique.append((y, x))
+
+        return unique
+
+
+    def is_palindrome(self, word):
+        for i in range(len(word)//2):
+            if word[i] != word[-1-i]:
+                return False
+        return True
