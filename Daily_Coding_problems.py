@@ -11,7 +11,7 @@ def product_not_i(arr):
         new_arr.append(int(arr_product/i))
     return new_arr
 
-# runtime would be O(2n): linear
+# runtime would be O(n): linear
 
 
 """Given an array of integers, find the first missing positive integer in linear time and constant space.
@@ -28,7 +28,7 @@ def lowest_int_not_in_arr(arr):
             print(lst)
     return lst.index(0) + 1                         # runtime at worst: O(n)
 
-# runtime would be at worst O(2n): linear
+# runtime would be at worst O(n): linear
 
 
 """cons(a, b) constructs a pair, and car(pair) and cdr(pair) returns the first and last element of that pair.
@@ -3565,3 +3565,28 @@ class Iterator2D:
                 return False
             else:
                 return True
+
+
+"""Given an N by N matrix, rotate it by 90 degrees clockwise. For example, given the following matrix:
+[[1, 2, 3],
+ [4, 5, 6],
+ [7, 8, 9]]
+you should return:
+[[7, 4, 1],
+ [8, 5, 2],
+ [9, 6, 3]]
+Follow-up: What if you couldn't use any extra space?"""
+
+
+def rotation90clockwise(array2d):
+    rotation = [[0 for _ in range(len(array2d))] for _ in range(len(array2d))]
+
+    length = len(array2d) - 1
+    low = 0
+
+    for x, array in enumerate(array2d):
+        for y in range(len(array2d)-1, -1, -1):
+            print(x, y)
+            rotation[low+y][length-x] = array2d[x][y]
+
+    return rotation
