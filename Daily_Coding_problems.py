@@ -3617,3 +3617,39 @@ class Solution:
             if word[i] != word[-1-i]:
                 return False
         return True
+    
+  
+"""Given a string s and a list of words words, where each word is the same length, find all starting indices of
+substrings in s that is a concatenation of every word in words exactly once. For example, given
+s = "dogcatcatcodecatdog" and words = ["cat", "dog"], return [0, 13], since "dogcat" starts at index 0 and "catdog"
+starts at index 13. Given s = "barfoobazbitbyte" and words = ["dog", "cat"], return [] since there are no substrings
+composed of "dog" and "cat" in s. The order of the indices does not matter."""
+
+
+class Solution:
+    def __init__(self, s, words):
+        self.s = s
+        self.words = words
+        self.w_length = len(words[0])
+        self.indices = []
+
+    def find_starting_indices(self):
+        for i in range(len(self.s) - self.w_length):
+            if self.s[i:i+self.w_length] in self.words:
+                if self.is_concatenation(i, self.words):
+                    self.indices.append(i)
+        return self.indices
+
+    def is_concatenation(self, index, words):
+        current_list = [i for i in words]
+        while current_list:
+            current_list.remove(self.s[index:index + self.w_length])
+            index += self.w_length
+            if not current_list:
+                return True
+            if index > len(self.s) and current_list:
+                break
+            if self.s[index:index + self.w_length] not in current_list:
+                break
+        return False
+
