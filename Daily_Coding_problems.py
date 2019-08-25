@@ -3653,3 +3653,52 @@ class Solution:
                 break
         return False
 
+
+"""Write a function to flatten a nested dictionary. Namespace the keys with a period.
+For example, given the following dictionary:
+{
+    "key": 3,
+    "foo": {
+        "a": 5,
+        "bar": {
+            "baz": 8
+        }
+    }
+}
+it should become:
+{
+    "key": 3,
+    "foo.a": 5,
+    "foo.bar.baz": 8
+}
+You can assume keys do not contain dots in them, i.e. no clobbering will occur."""
+
+
+def flatten_dict(nested):
+    keys = []
+    vals = []
+    flattened = []
+    for key in nested:
+        if type(nested[key]) == dict:
+            new_keys, new_vals = unnest(key, nested[key])
+            keys += new_keys
+            vals += new_vals
+        else:
+            keys.append(key)
+            vals.append(nested[key])
+    for i in range(len(keys)):
+        flattened.append({keys[i]: vals[i]})
+    return dict(pair for d in flattened for pair in d.items())
+
+def unnest(key, value):
+    keys = []
+    vals = []
+    for e in value:
+        if type(value[e]) == dict:
+            new_keys, new_vals = unnest(e, value[e])
+            keys += [key + '.' + i for i in new_keys]
+            vals += new_vals
+        else:
+            keys.append(key + '.' + e)
+            vals.append(value[e])
+    return keys, vals
