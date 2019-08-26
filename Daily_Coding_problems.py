@@ -3702,3 +3702,43 @@ def unnest(key, value):
             keys.append(key + '.' + e)
             vals.append(value[e])
     return keys, vals
+
+
+"""You are given a starting state start, a list of transition probabilities for a Markov chain, and a number of steps num_steps. Run the Markov chain starting from start for num_steps and compute the number of times we visited each state.
+For example, given the starting state a, number of steps 5000, and the following transition probabilities:
+[
+  ('a', 'a', 0.9),
+  ('a', 'b', 0.075),
+  ('a', 'c', 0.025),
+  ('b', 'a', 0.15),
+  ('b', 'b', 0.8),
+  ('b', 'c', 0.05),
+  ('c', 'a', 0.25),
+  ('c', 'b', 0.25),
+  ('c', 'c', 0.5)
+]
+One instance of running this Markov chain might produce { 'a': 3012, 'b': 1656, 'c': 332 }."""
+import random
+
+
+class Solution:
+    def markov_chain(self, state, array, steps):
+        self.output = {}
+        self.current_pos = state
+
+        for i in range(steps):
+            ran = random.uniform(0, 1)
+            self.prev_val = 0
+            self.helper(ran, array)
+        return self.output
+
+    def helper(self, ran, array):
+        for element in array:
+            if element[0] == self.current_pos:
+                if element[2] + self.prev_val > ran:
+                    self.current_pos = element[1]
+                    self.output.setdefault(element[1], 0)
+                    self.output[element[1]] += 1
+                    break
+                self.prev_val += element[2]
+        return
