@@ -3742,3 +3742,19 @@ class Solution:
                     break
                 self.prev_val += element[2]
         return
+
+    
+"""Determine whether there exists a one-to-one character mapping from one string s1 to another s2.
+For example, given s1 = abc and s2 = bcd, return true since we can map a to b, b to c, and c to d.
+Given s1 = foo and s2 = bar, return false since the o cannot map to two characters."""
+
+
+class Solution:
+    def one_to_one_mapping(self, s1, s2):
+        short = min(len(s1), len(s2))
+        for i in range(short - 1):
+            print(s1[-i-1:])
+            print(s2[:i+1])
+            if s1[-i-1:] == s2[:i+1]:
+                return True
+        return False
