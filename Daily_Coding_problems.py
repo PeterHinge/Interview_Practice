@@ -3758,3 +3758,40 @@ class Solution:
             if s1[-i-1:] == s2[:i+1]:
                 return True
         return False
+
+    
+"""Given a linked list and a positive integer k, rotate the list to the right by k places.
+For example, given the linked list 7 -> 7 -> 3 -> 5 and k = 2, it should become 3 -> 5 -> 7 -> 7.
+Given the linked list 1 -> 2 -> 3 -> 4 -> 5 and k = 3, it should become 3 -> 4 -> 5 -> 1 -> 2."""
+
+
+class Note:
+    def __init__(self, val):
+        self.val = val
+        self.next = None
+
+
+class LinkedList:
+    def __init__(self):
+        self.head = None
+        self.tail = None
+
+    def add(self, val):
+        if not self.head:
+            self.head = Note(val)
+            self.tail = self.head
+        else:
+            new = Note(val)
+            self.tail.next = new
+            self.tail = new
+
+    def rotate(self, k):
+        queue = [self.head]
+        while queue[-1].next:
+            queue.append(queue[-1].next)
+            if len(queue) > k:
+                queue.remove(queue[0])
+        queue[-1].next = self.head
+        self.tail = queue[-1]
+        self.head = queue[0]
+        return self.head
