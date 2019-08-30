@@ -3795,3 +3795,37 @@ class LinkedList:
         self.tail = queue[-1]
         self.head = queue[0]
         return self.head
+
+ 
+"""Alice wants to join her school's Probability Student Club. Membership dues are computed via one of two simple
+probabilistic games. The first game: roll a die repeatedly. Stop rolling once you get a five followed by a six.
+Your number of rolls is the amount you pay, in dollars. The second game: same, except that the stopping condition
+is a five followed by a five. Which of the two games should Alice elect to play? Does it even matter?
+Write a program to simulate the two games and calculate their expected value."""
+import random
+
+
+class Solution:
+    def dice_game(self, first, second):
+        first_roll_cleared = False
+        dollars = 0
+        while True:
+            ran_num = random.randint(1, 6)
+            dollars += 1
+            if first_roll_cleared:
+                if ran_num == second:
+                    return dollars
+                if ran_num != first:
+                    first_roll_cleared = False
+
+            else:
+                if ran_num == first:
+                    first_roll_cleared = True
+
+    def simulation(self, first, second):
+        sum = 0
+        for i in range(10000):
+            sum += self.dice_game(first, second)
+        return sum / 10000
+
+# She should pick first game (conditional probability)
