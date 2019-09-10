@@ -3886,3 +3886,28 @@ class Solution:
         if minus:
             return -lst
         return lst
+    
+    
+"""Given an array of elements, return the length of the longest subarray where all its elements are distinct. For example,
+given the array [5, 1, 3, 5, 2, 3, 4, 1], return 5 as the longest subarray of distinct elements is [5, 2, 3, 4, 1]."""
+
+
+def longest_subarray(array):
+    long = 0
+    start = 0
+    subarray = {}
+
+    for i, e in enumerate(array):
+        if e in subarray:
+            if i - subarray[e] > long:
+                long = i - (subarray[e] + 1)
+            if start < subarray[e] + 1:
+                start = subarray[e] + 1
+        if i - start > long:
+            long = i - start
+        subarray[e] = i
+
+    long += 1
+
+    return long
+
