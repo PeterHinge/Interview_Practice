@@ -3950,3 +3950,35 @@ def can_reach_end(array):
                 return True
 
     return False
+
+
+"""Given a array of numbers representing the stock prices of a company in chronological order, write a function that
+calculates the maximum profit you could have made from buying and selling that stock. You're also given a number fee
+that represents a transaction fee for each buy and sell transaction. You must buy before you can sell the stock, but
+you can make as many transactions as you like. For example, given [1, 3, 2, 8, 4, 10] and fee = 2, you should return 9,
+since you could buy the stock at 1 dollar, and sell at 8 dollars, and then buy it at 4 dollars and sell it at 10
+dollars. Since we did two transactions, there is a 4 dollar fee, so we have 7 + 6 = 13 profit minus 4 dollars of fees."""
+
+
+def max_profit(array, fee):
+    if not array:
+        return 0
+
+    profit = 0
+    buy = array[0]
+
+    for i, num in enumerate(array):
+        if num < buy:
+            buy = num
+        if num - fee > buy:
+            try:
+                if array[i+1] < num - fee:
+                    profit += num - fee - buy
+                    buy = array[i+1]
+            except:
+                pass
+
+    if array[-1] - fee > buy:
+        profit += array[-1] - fee - buy
+
+    return profit
