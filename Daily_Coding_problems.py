@@ -4004,3 +4004,13 @@ def smaller_larger_than(matrix, low, high):
                 num_of_elements += 1
 
     return num_of_elements
+
+
+"""Given an array and a number k that's smaller than the length of the array,
+rotate the array to the right k elements in-place."""
+
+
+def rotate(array, k):
+    assert k < len(array)
+
+    return array[-k:] + array[:-k]
