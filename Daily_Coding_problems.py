@@ -4013,4 +4013,8 @@ rotate the array to the right k elements in-place."""
 def rotate(array, k):
     assert k < len(array)
 
-    return array[-k:] + array[:-k]
+    for i in range(k):
+        for j in range(len(array) - 1):
+            array[-1-j], array[-2-j] = array[-2-j], array[-1-j]
+
+    return array
