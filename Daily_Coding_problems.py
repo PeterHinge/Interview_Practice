@@ -4039,3 +4039,21 @@ def largest_modular_subpair(array):
 
     return ls
 
+
+"""Let X be a set of n intervals on the real line. We say that a set of points P "stabs" X if every interval
+in X contains at least one point in P. Compute the smallest set of points that stabs X.
+For example, given the intervals [(1, 4), (4, 5), (7, 9), (9, 12)], you should return [4, 9]."""
+
+
+def real_line(array):
+    start = array[0][1]
+    end = array[-1][0]
+
+    for point in array:
+        if point[1] < start:
+            start = point[1]
+
+        if point[0] > end:
+            end = point[0]
+
+    return [start, end]
