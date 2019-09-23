@@ -4084,3 +4084,24 @@ def max_weight_path(array):
         current_weight = next_level
 
     return current_weight[0]
+
+
+"""Write a program that checks whether an integer is a palindrome. For example, 121 is a palindrome, as well as 888.
+678 is not a palindrome. Do not convert the integer into a string."""
+
+
+def is_int_palindrome(num):
+    while num >= 10:
+        right = num % 10
+        temp = 10
+        while num // temp != 0:
+            temp *= 10
+        temp //= 10
+        left = num // temp
+
+        if left == right:
+            num -= temp
+            num //= 10
+
+        else:
+            return False
