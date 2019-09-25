@@ -4105,3 +4105,39 @@ def is_int_palindrome(num):
 
         else:
             return False
+
+        
+ """Given a complete binary tree, count the number of nodes in faster than O(n) time. Recall that a complete binary
+tree has every level filled except the last, and the nodes in the last level are filled starting from the left."""
+
+
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+
+
+class BinaryTree:
+    def __init__(self):
+        self.notes = []
+        self.root = None
+
+    def add(self, val):
+        new_note = TreeNode(val)
+
+        self.notes.append(new_note)
+
+        if not self.root:
+            self.root = new_note
+        else:
+            for note in self.notes:
+                if not note.left:
+                    note.left = new_note
+                    break
+                if not note.right:
+                    note.right = new_note
+                    break
+
+    def count(self):
+        print(len(self.notes))
