@@ -4156,3 +4156,24 @@ def permutation_swap(array, perm):
         new_array[i] = array[num]
 
     return new_array
+
+
+"""Write a program that computes the length of the longest common subsequence of three given strings.
+For example, given "epidemiologist", "refrigeration", and "supercalifragilisticexpialodocious",
+it should return 5, since the longest common subsequence is "eieio"."""
+
+
+def long_common_sub(w1, w2, w3):
+    length = len(w1)
+    times = 1
+    while length > 0:
+        for i in range(times):
+            print(w1[i:i+length])
+            if in_word(w1[i:i+length], w2) and in_word(w1[i:i+length], w3):
+                return len(w1[i:i+length])
+        length -= 1
+        times += 1
+    return None
+
+def in_word(w1, w2):
+    return w1 in w2
