@@ -4177,3 +4177,39 @@ def long_common_sub(w1, w2, w3):
 
 def in_word(w1, w2):
     return w1 in w2
+
+
+"""Write a program that computes the length of the longest common subsequence of three given strings.
+For example, given "epidemiologist", "refrigeration", and "supercalifragilisticexpialodocious",
+it should return 5, since the longest common subsequence is "eieio"."""
+
+
+def long_common_sub(w1, w2, w3):
+    w1 = make_vowels(w1)
+    w2 = make_vowels(w2)
+    w3 = make_vowels(w3)
+    length = len(w1)
+    times = 1
+    while length > 0:
+        for i in range(times):
+            print(w1[i:i+length])
+            if in_word(w1[i:i+length], w2) and in_word(w1[i:i+length], w3):
+                return len(w1[i:i+length])
+        length -= 1
+        times += 1
+    return None
+
+
+def make_vowels(word):
+    new_word = ''
+    for letter in word:
+        if letter in ['e', 'i', 'o']:
+            if not new_word:
+                new_word += letter
+            else:
+                new_word += letter if letter != new_word[-1] else ''
+    return new_word
+
+
+def in_word(w1, w2):
+    return w1 in w2
