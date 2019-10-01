@@ -4192,3 +4192,32 @@ def make_vowels(word):
 
 def in_word(w1, w2):
     return w1 in w2
+
+
+"""A Collatz sequence in mathematics can be defined as follows. Starting with any positive integer:
+if n is even, the next number in the sequence is n / 2
+if n is odd, the next number in the sequence is 3n + 1
+It is conjectured that every such sequence eventually reaches the number 1. Test this conjecture.
+Bonus: What input n <= 1000000 gives the longest sequence?"""
+
+
+def collatz_sequence(n):
+    sequence = 0
+    for i in range(n*10):
+        if n == 1:
+            return sequence
+        if n % 2 == 0:
+            n = n // 2
+        elif n % 2 == 1:
+            n = 3 * n + 1
+        sequence += 1
+    return False
+
+
+def bonus():
+    large = 0, 0
+    for i in range(1000000):
+        current = collatz_sequence(i+1)
+        if current > large[0]:
+            large = current, i
+    return large[1]
