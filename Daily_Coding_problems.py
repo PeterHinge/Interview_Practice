@@ -4221,3 +4221,29 @@ def bonus():
         if current > large[0]:
             large = current, i
     return large[1]
+
+
+"""Spreadsheets often use this alphabetical encoding for its columns:
+"A", "B", "C", ..., "AA", "AB", ..., "ZZ", "AAA", "AAB", ....Given a column number,
+return its alphabetical column id. For example, given 1, return "A". Given 27, return "AA"."""
+
+
+def num_to_letter(num):
+    assert type(num) == int
+    assert num > 0
+
+    string = ''
+    temp = []
+
+    while num != 0:
+        if num % 26 == 0:
+            temp.append(26)
+            num = num // 26 - 1
+        else:
+            temp.append(num % 26)
+            num = num // 26
+
+    for val in reversed(temp):
+        string += chr(val + 64)
+
+    return string
