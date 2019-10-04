@@ -4247,3 +4247,47 @@ def num_to_letter(num):
         string += chr(val + 64)
 
     return string
+
+
+"""Given an integer n, return the length of the longest consecutive run of 1s in its binary representation.
+For example, given 156, you should return 3."""
+
+
+def logest_1_binary(n):
+    if n == 0:
+        return 0
+
+    start = 1
+
+    while start < n:
+        start *= 2
+
+    start //= 2
+
+    bit_code = []
+
+    while n != 0:
+        if n // start == 1:
+            bit_code.append(1)
+            n -= start
+        else:
+            bit_code.append(0)
+        start //= 2
+
+    ones = 0
+    counter = 0
+
+    print(bit_code)
+
+    for bit in bit_code:
+        if bit == 1:
+            counter += 1
+        else:
+            if ones < counter:
+                ones = counter
+            counter = 0
+
+    if ones < counter:
+        ones = counter
+    
+    return ones
