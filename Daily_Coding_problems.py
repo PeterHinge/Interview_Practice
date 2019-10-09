@@ -4320,3 +4320,39 @@ def roman_to_num(string):
                 num += lib[letter]
 
     return num
+
+
+"""Write an algorithm that computes the reversal of a directed graph. For example,
+if a graph consists of A -> B -> C, it should become A <- B <- C."""
+
+
+class GraphNote:
+    def __init__(self, val):
+        self.val = val
+        self.from_notes = []
+        self.to_notes = []
+
+
+class Graph:
+    def __init__(self):
+        self.graph = []
+
+    def add_note(self, val):
+        self.graph.append(GraphNote(val))
+
+    def create_link(self, note1, note2):
+        for note in self.graph:
+            if note.val == note1:
+                note1 = note
+            elif note.val == note2:
+                note2 = note
+        note1.to_notes.append(note2)
+        note2.from_notes.append(note1)
+
+    def reverse_graph(self):
+        for note in self.graph:
+            note.from_notes, note.to_notes = note.to_notes, note.from_notes
+
+    def view(self):
+        for note in self.graph:
+            print(f"VAL: {note.val} - LINKS FROM {note.from_notes} - LINKS TO {note.to_notes}")
