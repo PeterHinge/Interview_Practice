@@ -4356,3 +4356,34 @@ class Graph:
     def view(self):
         for note in self.graph:
             print(f"VAL: {note.val} - LINKS FROM {note.from_notes} - LINKS TO {note.to_notes}")
+
+            
+ """Implement a PrefixMapSum class with the following methods:
+insert(key: str, value: int): Set a given key's value in the map. If the key already exists, overwrite the value.
+sum(prefix: str): Return the sum of all values of keys that begin with a given prefix.
+For example, you should be able to run the following code:
+mapsum.insert("columnar", 3)
+assert mapsum.sum("col") == 3
+mapsum.insert("column", 2)
+assert mapsum.sum("col") == 5"""
+
+
+class PrefixMapSum:
+    def __init__(self):
+        self.map = {}
+
+    def insert(self, key, val):
+        assert type(key) == str
+        assert type(val) == int
+        self.map[key] = val
+
+    def sum(self, prefix):
+        assert type(prefix) == str
+
+        sum = 0
+
+        for key, val in self.map.items():
+            if key[:len(prefix)] == prefix:
+                sum += val
+
+        return sum
