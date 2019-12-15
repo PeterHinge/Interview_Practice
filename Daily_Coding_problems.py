@@ -4387,3 +4387,16 @@ class PrefixMapSum:
                 sum += val
 
         return sum
+
+    
+"""Given an array of integers, determine whether it contains a Pythagorean triplet.
+Recall that a Pythogorean triplet (a, b, c) is defined by the equation a2+ b2= c2."""
+
+
+def pythogorean_triplet(a, b, c):
+    if a >= b and a >= c:
+        return c**2 + b**2 == a**2
+    elif b >= a and b >= c:
+        return a** 2 + c ** 2 == b ** 2
+    else:
+        return a ** 2 + b ** 2 == c ** 2
