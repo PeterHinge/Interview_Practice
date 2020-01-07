@@ -4486,21 +4486,21 @@ If you find a voter voting more than once, report this as fraud."""
 def top_3_candidates():
     with open("text.txt", "r") as f:
         data = f.read()
-    
+
         voters = set()
-    
+
         candidates = {}
-    
+
         for voter, can in data:
             if voter in voters:
                 print(f"Voter: {voter} is a fraud!")
-    
+
             else:
                 voters.add(voter)
                 candidates.setdefault(can, 0)
                 candidates[can] += 1
-    
+
         assert len(candidates) >= 3
-        top_3 = sorted(candidates.items(), key=lambda x: x[1])
-    
-        return top_3
+        sorted_candidates = sorted(candidates.items(), key=lambda x: x[1])
+
+        return sorted_candidates[:3]
