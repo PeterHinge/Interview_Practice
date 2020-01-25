@@ -4504,3 +4504,68 @@ def top_3_candidates():
         sorted_candidates = sorted(candidates.items(), key=lambda x: x[1])
 
         return sorted_candidates[:3]
+
+    
+"""Write a program to merge two binary trees. Each node in the new tree should hold a value equal to the sum of the
+values of the corresponding nodes of the input trees. If only one input tree has a node in a given position,
+the corresponding node in the new tree should match that input node."""
+
+
+class BinaryNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+
+
+class BinaryTree:
+    def __init__(self):
+        self.root = None
+        self.tree_list = []
+
+    def add(self, val):
+        new_node = BinaryNode(val)
+
+        if not self.root:
+            self.root = new_node
+
+        else:
+            for node in self.tree_list:
+                if not node.left:
+                    node.left = new_node
+                    break
+                if not node.right:
+                    node.right = new_node
+                    break
+
+        self.tree_list.append(new_node)
+
+
+def add_2_binary_nodes(node1, node2):
+
+    new_val = 0
+
+    if node1:
+        new_val += node1.val
+
+    if node2:
+        new_val += node2.val
+
+    new_node = BinaryNode(new_val)
+
+    if (node1 and node1.left) or (node2 and node2.left):
+        new_node.left = add_2_binary_nodes(node1.left, node2.left)
+
+    if (node1 and node1.right) or (node2 and node2.right):
+        new_node.right = add_2_binary_nodes(node1.right, node2.right)
+
+    return new_node
+
+
+def add_2_binary_trees(root1, root2):
+    if not root1 and not root2:
+        return None
+
+    tree_root = (add_2_binary_nodes(root1, root2))
+
+    return tree_root
