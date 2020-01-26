@@ -4590,3 +4590,34 @@ def minimize_mice_to_holes(mize, holes):
 
     return max_diff
 
+
+"""In linear algebra, a Toeplitz matrix is one in which the elements on any given diagonal from top left to bottom
+right are identical. Here is an example:
+[[1, 2, 3, 4, 8],
+[5, 1, 2, 3, 4],
+[4, 5, 1, 2, 3],
+[7, 4, 5, 1, 2]]
+Write a program to determine whether a given input is a Toeplitz matrix."""
+
+
+def check_right_and_down(matrix, num, x, y):
+    try:
+        if matrix[y+1][x+1] == num:
+            return check_right_and_down(matrix, num, x+1, y+1)
+        return False
+    except:
+        return True
+
+
+def is_toeplitz_matrix(matrix):
+    for y, array in enumerate(matrix):
+        if y == 0:
+            for x, num in enumerate(array):
+                if not check_right_and_down(matrix, num, x, y):
+                    return False
+
+        else:
+            if not check_right_and_down(matrix, array[0], 0, y):
+                return False
+
+    return True
