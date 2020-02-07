@@ -4621,3 +4621,24 @@ def is_toeplitz_matrix(matrix):
                 return False
 
     return True
+
+
+"""Given a set of points (x, y) on a 2D cartesian plane, find the two closest points. For example,
+given the points [(1, 1), (-1, -1), (3, 4), (6, 1), (-1, -6), (-4, -3)], return [(-1, -1), (1, 1)]."""
+
+
+def pythagoras(a, b):
+    return (a**2 + b**2)**(1/2)
+
+
+def closest_points(array):
+    points = [], 0
+
+    for i in range(len(array)-2):
+        for j in range(i+1, len(array)-1):
+            euclidean_dist = pythagoras(abs(array[i][0] - array[j][0]), abs(array[i][1] - array[j][1]))
+
+            if not points[0] or euclidean_dist < points[1]:
+                points = [array[i], array[j]], euclidean_dist
+
+    return points[0]
