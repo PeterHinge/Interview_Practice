@@ -4642,3 +4642,17 @@ def closest_points(array):
                 points = [array[i], array[j]], euclidean_dist
 
     return points[0]
+
+
+"""Given an array of numbers and a number k, determine if there are three entries in the array which add up to the
+specified number k. For example, given [20, 303, 3, 4, 25] and k = 49, return true as 20 + 4 + 25 = 49."""
+
+
+def is_sum_of_3_elements(array, num):
+    for i in range(len(array)-2):
+        for j in range(i+1, len(array)-1):
+            for k in range(j+1, len(array)):
+                if array[i] + array[j] + array[k] == num:
+                    return True
+
+    return False
