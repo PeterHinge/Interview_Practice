@@ -4656,3 +4656,46 @@ def is_sum_of_3_elements(array, num):
                     return True
 
     return False
+
+
+"""A strobogrammatic number is a positive number that appears the same after being rotated 180 degrees.
+For example, 16891 is strobogrammatic. Create a program that finds all strobogrammatic numbers with N digits."""
+
+
+def is_strobogrammatic(string):
+    length = len(string)
+
+    if length % 2 == 1:
+        if string[length // 2] not in ["0", "1", "8"]:
+            return False
+
+    for i in range(length // 2):
+        if string[i] in ["0", "1", "8"]:
+            if string[i] != string[-i-1]:
+                return False
+        elif string[i] == "6":
+            if string[-i-1] != "9":
+                return False
+        elif string[i] == "9":
+            if string[-i-1] != "6":
+                return False
+        else:
+            return False
+
+    return True
+
+
+def strobogrammatic_numbers(n):
+    if n == 0:
+        return []
+
+    numbers = []
+
+    for i in range(10**(n-1), 10**(n), 1):
+        if is_strobogrammatic(str(i)):
+            numbers.append(i)
+
+    return numbers
+
+
+
