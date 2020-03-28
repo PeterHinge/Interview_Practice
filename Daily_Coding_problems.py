@@ -4726,3 +4726,28 @@ def closet_coin(our_pos, coins_pos):
     return closet[0]
 
 
+"""Given a string, sort it in decreasing order based on the frequency of characters. If there are multiple possible
+solutions, return any of them. For example, given the string tweet, return tteew. eettw would also be acceptable."""
+
+
+def rearrange_sting(string):
+    h_map = {}
+    for c in string:
+        h_map.setdefault(c, 0)
+        h_map[c] += 1
+
+    new_string = ""
+
+    while h_map:
+        max_pair = "", 0
+
+        for key, val in h_map.items():
+            if val > max_pair[1]:
+                max_pair = key, val
+
+        h_map.pop(max_pair[0])
+
+        new_string += max_pair[0] * max_pair[1]
+
+    return new_string
+
