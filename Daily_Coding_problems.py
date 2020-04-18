@@ -4765,3 +4765,21 @@ def permutation_swap(array, perm):
         new_array.append(array[e])
 
     return new_array
+
+
+"""Using a function rand5() that returns an integer from 1 to 5 (inclusive) with uniform probability,
+implement a function rand7() that returns an integer from 1 to 7 (inclusive)."""
+
+from random import randint
+
+
+def rand5():
+    return randint(1, 5)
+
+
+def rand7():
+    num = 0
+    for i in range(10):
+        num += rand5()
+
+    return num % 7 + 1
