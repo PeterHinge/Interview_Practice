@@ -4783,3 +4783,75 @@ def rand7():
         num += rand5()
 
     return num % 7 + 1
+
+
+
+"""Write a program to merge two binary trees. Each node in the new tree should hold a value equal to the sum of the
+values of the corresponding nodes of the input trees. If only one input tree has a node in a given position,
+the corresponding node in the new tree should match that input node."""
+
+
+class BinaryNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+
+class BinaryTree:
+    def __init__(self, root=None):
+        self.root = root
+        self.nodes = []
+
+    def add_node(self, val):
+        new_node = BinaryNode(val)
+
+        if not self.root:
+            self.root = new_node
+
+        else:
+            for node in self.nodes:
+                if not node.left:
+                    node.left = new_node
+                    break
+                if not node.right:
+                    node.right = new_node
+                    break
+
+        self.nodes.append(new_node)
+
+
+def merge_binary_trees(root1, root2):
+    if not root1:
+        return root2
+    if not root2:
+        return root1
+
+    new_val = root1.val + root2.val
+
+    new_node = BinaryNode(new_val)
+
+    if root1.left and root2.left:
+        new_node.left = merge_binary_trees(root1.left, root2.left)
+
+    elif root1.left:
+        new_node.left = root1.left
+
+    elif root2.left:
+        new_node.left = root2.left
+
+    else:
+        pass
+
+    if root1.right and root2.right:
+        new_node.right = merge_binary_trees(root1.right, root2.right)
+
+    elif root1.right:
+        new_node.right = root1.right
+
+    elif root2.right:
+        new_node.right = root2.right
+
+    else:
+        pass
+
+    return new_node
