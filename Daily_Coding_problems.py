@@ -4855,3 +4855,25 @@ def merge_binary_trees(root1, root2):
         pass
 
     return new_node
+
+
+"""Implement the function fib(n), which returns the nth number in the Fibonacci sequence, using only O(1) space."""
+
+
+def fib(n):
+    if n == 0:
+        return 0
+    if n == 1:
+        return 1
+
+    h1 = 0
+    h2 = 1
+
+    for i in range(n-1):
+        next_num = h1 + h2
+        h1 = h2
+        h2 = next_num
+
+    return h2
+
+
