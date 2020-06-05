@@ -4877,3 +4877,28 @@ def fib(n):
     return h2
 
 
+"""You are given a list of data entries that represent entries and exits of groups of people into a building.
+An entry looks like this: {"timestamp": 1526579928, count: 3, "type": "enter"}
+This means 3 people entered the building. An exit looks like this: {"timestamp": 1526580382, count: 2, "type": "exit"}
+This means that 2 people exited the building. timestamp is in Unix time. Find the busiest period in the building,
+that is, the time with the most people in the building. Return it as a pair of (start, end) timestamps.
+You can assume the building always starts off and ends up empty, i.e. with 0 people inside."""
+
+
+def most_people_in_building(data):
+    current_people = 0
+
+    most_people = 0
+    most_people_time = tuple()
+
+    for i in range(len(data) - 1):
+        if data[i]['type'] == 'enter':
+            current_people += data[i]['count']
+            if current_people > most_people:
+                most_people = current_people
+                most_people_time = (data[i]['timestamp'], data[i+1]['timestamp'])
+
+        else:
+            current_people -= data[i]['count']
+
+    return most_people_time
