@@ -4921,3 +4921,12 @@ for i in range(10):
 
 for f in functions:
     print(f())
+
+    
+"""
+Given a sorted list of integers, square the elements and give the output in sorted order.
+For example, given [-9, -2, 0, 2, 3], return [0, 4, 4, 9, 81].
+"""
+
+def sorted_and_squared(lst):
+    return sorted([e**2 for e in lst])
