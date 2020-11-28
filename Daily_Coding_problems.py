@@ -4930,3 +4930,24 @@ For example, given [-9, -2, 0, 2, 3], return [0, 4, 4, 9, 81].
 
 def sorted_and_squared(lst):
     return sorted([e**2 for e in lst])
+
+
+"""
+Given an integer n, return the length of the longest consecutive run of 1s in its binary representation.
+For example, given 156, you should return 3.
+"""
+
+
+def bit_representation(n):
+    bit_string = bin(n)[2:]
+    max_holder = 0
+    holder = 0
+    for letter in bit_string:
+        if letter == "1":
+            holder += 1
+        else:
+            if holder > max_holder:
+                max_holder = holder
+            holder = 0
+
+    return max(holder, max_holder)
