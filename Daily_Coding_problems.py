@@ -4951,3 +4951,42 @@ def bit_representation(n):
             holder = 0
 
     return max(holder, max_holder)
+
+
+"""
+Given a list of integers, return the largest product that can be made by multiplying any three integers.
+For example, if the list is [-10, -10, 5, 2], we should return 500, since that's -10 * -10 * 5.
+You can assume the list has at least three integers.
+"""
+
+
+def largest_product(lst):
+    sort_start = sorted(lst)
+    max1, max2, max3 = sort_start[2], sort_start[1], sort_start[0]
+    min1, min2 = sort_start[0], sort_start[1]
+
+    for n in lst:
+        if n > max3:
+            if n > max2:
+                if n > max1:
+                    max3 = max2
+                    max2 = max1
+                    max1 = n
+                else:
+                    max3 = max2
+                    max2 = n
+            else:
+                max3 = n
+
+        if n < min2:
+            if n < min1:
+                min2 = min1
+                min1 = n
+            else:
+                min2 = n
+
+    largest = max1 * max2 * max3
+    if min1 * min2 * max1 > largest:
+        largest = min1 * min2 * max1
+
+    return largest
